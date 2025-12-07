@@ -54,7 +54,7 @@ module.exports = async (client, interaction, args) => {
             return client.errWait({ time: time, type: 'editreply' }, interaction);
         }
         else {
-            client.succNormal({ 
+            client.succNormal({
                 text: `🐱 **Splash!** You dipped your paw in the water!`,
                 fields: [
                     {
@@ -64,13 +64,13 @@ module.exports = async (client, interaction, args) => {
                     },
                     {
                         name: `🧀┆Cheese Coins`,
-                        value: `+${caught.value} coins`,
+                        value: `+${caught.value} cheese coins`,
                         inline: true
                     }
                 ],
-                type: 'editreply' 
+                type: 'editreply'
             }, interaction);
-            
+
             client.addMoney(interaction, user, caught.value);
 
             if (userItems) {
@@ -94,4 +94,3 @@ module.exports = async (client, interaction, args) => {
 
 }
 
- 

@@ -18,7 +18,7 @@ module.exports = async (client, interaction, args) => {
         }
         else {
 
-            let replies = ['Hacking', 'Burglary', 'Roberry', 'Murder', 'Dealing drugs', 'Child abuse', 'Arms trade', 'Street robbery'];
+            let replies = ['Knocking a vase off the table', 'Stealing fish from the counter', 'Scratching the sofa', 'Hissing at the dog', 'Unrolling toilet paper', 'Napping on the keyboard', 'Stealing socks', 'Knocking over the trash can'];
 
             let result = Math.floor((Math.random() * replies.length));
             let result2 = Math.floor((Math.random() * 10));
@@ -77,4 +77,3 @@ module.exports = async (client, interaction, args) => {
     })
 }
 
- 
