@@ -2,6 +2,12 @@ const Discord = require('discord.js');
 const chalk = require('chalk');
 require('dotenv').config('./.env');
 const axios = require('axios');
+const http = require('http');
+const port = process.env.PORT || 3000;
+http.createServer((req, res) => {
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end('Bot is alive!');
+}).listen(port, () => console.log(`Keep-alive server listening on port ${port}`));
 
 
 
@@ -69,10 +75,10 @@ manager.on('shardCreate', shard => {
             }
         ])
         .setColor(config.colors.normal)
-    if(startLogs) startLogs.send({
+    if (startLogs) startLogs.send({
         username: 'Bot Logs',
         embeds: [embed],
-    }).catch(() => {});
+    }).catch(() => { });
 
     console.log(chalk.blue(chalk.bold(`System`)), (chalk.white(`>>`)), (chalk.green(`Starting`)), chalk.red(`Shard #${shard.id + 1}`), (chalk.white(`...`)))
     console.log(`\u001b[0m`);
@@ -87,10 +93,10 @@ manager.on('shardCreate', shard => {
                 },
             ])
             .setColor(config.colors.normal)
-        if(shardLogs) shardLogs.send({
+        if (shardLogs) shardLogs.send({
             username: 'Bot Logs',
             embeds: [embed]
-        }).catch(() => {});
+        }).catch(() => { });
 
         if (process.exitCode === null) {
             const embed = new Discord.EmbedBuilder()
@@ -106,10 +112,10 @@ manager.on('shardCreate', shard => {
                     }
                 ])
                 .setColor(config.colors.normal)
-            if(shardLogs) shardLogs.send({
+            if (shardLogs) shardLogs.send({
                 username: 'Bot Logs',
                 embeds: [embed]
-            }).catch(() => {});
+            }).catch(() => { });
         }
     });
 
@@ -118,20 +124,20 @@ manager.on('shardCreate', shard => {
             .setTitle(`🚨・Shard ${shard.id + 1}/${manager.totalShards} disconnected`)
             .setDescription("Dumping socket close event...")
             .setColor(config.colors.normal)
-        if(shardLogs) shardLogs.send({
+        if (shardLogs) shardLogs.send({
             username: 'Bot Logs',
             embeds: [embed],
-        }).catch(() => {});
+        }).catch(() => { });
     });
 
     shard.on("shardReconnecting", () => {
         const embed = new Discord.EmbedBuilder()
             .setTitle(`🚨・Reconnecting shard ${shard.id + 1}/${manager.totalShards}`)
             .setColor(config.colors.normal)
-        if(shardLogs) shardLogs.send({
+        if (shardLogs) shardLogs.send({
             username: 'Bot Logs',
             embeds: [embed],
-        }).catch(() => {});
+        }).catch(() => { });
     });
 });
 
@@ -176,7 +182,7 @@ process.on('unhandledRejection', error => {
     consoleLogs.send({
         username: 'Bot Logs',
         embeds: [embed],
-    }).catch(() => {});
+    }).catch(() => { });
 });
 
 process.on('warning', warn => {
@@ -193,5 +199,5 @@ process.on('warning', warn => {
     warnLogs.send({
         username: 'Bot Logs',
         embeds: [embed],
-    }).catch(() => {});
+    }).catch(() => { });
 });
