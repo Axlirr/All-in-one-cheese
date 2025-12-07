@@ -15,9 +15,9 @@ module.exports = (client) => {
                 name: client.user.username,
                 iconURL: client.user.avatarURL({ size: 1024 })
             })
-            .setColor(client.config.colors.normal)
+            .setColor("#FFC300") // Cheese Yellow
             .setFooter({
-                text: client.config.discord.footer,
+                text: "Cheese Bot 🧀 • Stay Cheesy!",
                 iconURL: client.user.avatarURL({ size: 1024 })
             })
             .setTimestamp();
@@ -35,12 +35,12 @@ module.exports = (client) => {
         content: content,
         components: components
     }, interaction) {
-        embed.setTitle(`${client.emotes.normal.error}・Error!`)
-        embed.setDescription(`Something went wrong!`)
-        embed.addFields( 
-            { name: "💬┆Error comment", value: `\`\`\`${error}\`\`\``},
+        embed.setTitle(`❌・Error`)
+        embed.setDescription(`**Something went wrong!**`)
+        embed.addFields(
+            { name: "🛑┆Details", value: `\`\`\`${error}\`\`\`` },
         )
-        embed.setColor(client.config.colors.error)
+        embed.setColor("#FF5555") // Soft Red
 
         return client.sendEmbed({
             embeds: [embed],
@@ -58,12 +58,12 @@ module.exports = (client) => {
         content: content,
         components: components
     }, interaction) {
-        embed.setTitle(`${client.emotes.normal.error}・Error!`)
+        embed.setTitle(`❌・Invalid Usage`)
         embed.setDescription(`You did not provide the correct arguments`)
         embed.addFields(
-            { name: "💬┆Required arguments", value: `\`\`\`${usage}\`\`\``},    
+            { name: "⚙️┆Required arguments", value: `\`\`\`${usage}\`\`\`` },
         )
-        embed.setColor(client.config.colors.error)
+        embed.setColor("#FF5555") // Soft Red
 
         return client.sendEmbed({
             embeds: [embed],
@@ -82,12 +82,12 @@ module.exports = (client) => {
         content: content,
         components: components
     }, interaction) {
-        embed.setTitle(`${client.emotes.normal.error}・Error!`)
+        embed.setTitle(`🚫・Access Denied`)
         embed.setDescription(`You don't have the right permissions`)
         embed.addFields(
-            { name: "🔑┆Required Permission", value: `\`\`\`${perms}\`\`\``},
+            { name: "🔑┆Required Permission", value: `\`\`\`${perms}\`\`\`` },
         )
-        embed.setColor(client.config.colors.error)
+        embed.setColor("#FF5555") // Soft Red
 
         return client.sendEmbed({
             embeds: [embed],
@@ -106,12 +106,12 @@ module.exports = (client) => {
         content: content,
         components: components
     }, interaction) {
-        embed.setTitle(`${client.emotes.normal.error}・Error!`)
+        embed.setTitle(`🚫・I Need Permissions`)
         embed.setDescription(`I don't have the right permissions`)
         embed.addFields(
-            { name: "🔑┆Required Permission", value: `\`\`\`${perms}\`\`\``},
+            { name: "🔑┆Required Permission", value: `\`\`\`${perms}\`\`\`` },
         )
-        embed.setColor(client.config.colors.error)
+        embed.setColor("#FF5555") // Soft Red
 
         return client.sendEmbed({
             embeds: [embed],
@@ -130,12 +130,12 @@ module.exports = (client) => {
         content: content,
         components: components
     }, interaction) {
-        embed.setTitle(`${client.emotes.normal.error}・Error!`)
+        embed.setTitle(`⏳・Cooldown`)
         embed.setDescription(`You've already done this once`)
         embed.addFields(
-            { name: "⏰┆Try again on", value: `<t:${time}:f>`},
+            { name: "⏰┆Try again on", value: `<t:${time}:f>` },
         )
-        embed.setColor(client.config.colors.error)
+        embed.setColor("#FFA500") // Orange
 
         return client.sendEmbed({
             embeds: [embed],
@@ -158,9 +158,9 @@ module.exports = (client) => {
         content: content,
         components: components
     }, interaction) {
-        embed.setTitle(`${client.emotes.normal.check}・Success!`)
+        embed.setTitle(`✅・Success`)
         embed.setDescription(`${text}`)
-        embed.setColor(client.config.colors.succes)
+        embed.setColor("#57F287") // Modern Green
 
         if (fields) embed.addFields(fields);
 
@@ -230,7 +230,7 @@ module.exports = (client) => {
         const functiondata = await Schema.findOne({ Guild: interaction.guild.id })
 
         let embed = new Discord.EmbedBuilder()
-            .setColor(client.config.colors.normal)
+            .setColor("#FFC300") // Cheese Yellow
 
         if (title) embed.setTitle(title);
         if (desc && desc.length >= 2048) embed.setDescription(desc.substr(0, 2044) + "...");
@@ -318,4 +318,3 @@ module.exports = (client) => {
     }
 }
 
- 
