@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const chalk = require('chalk');
-require('dotenv').config('./.env');
+require('dotenv').config({ path: './.env' });
 const axios = require('axios');
 const http = require('http');
 const port = process.env.PORT || 3000;
