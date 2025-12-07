@@ -5,7 +5,7 @@ const { random } = require('mathjs');
 module.exports = async (client) => {
     const webhooksEnabled = client.webhooks.startLogs.id && client.webhooks.startLogs.token;
     let startLogs = null;
-    
+
     if (webhooksEnabled) {
         startLogs = new Discord.WebhookClient({
             id: client.webhooks.startLogs.id,
@@ -29,7 +29,7 @@ module.exports = async (client) => {
         startLogs.send({
             username: 'Bot Logs',
             embeds: [embed],
-        }).catch(() => {});
+        }).catch(() => { });
     }
 
     setInterval(async function () {
@@ -46,7 +46,7 @@ module.exports = async (client) => {
                     statuttext = [
                         `・❓┆/help`,
                         `・💻┆${totalGuilds} servers`,
-                        `・📨┆discord.gg/corwindev`,
+                        `・📨┆discord.gg/cheese`,
                         `・🎉┆400+ commands`,
                         `・🏷️┆Version ${require(`${process.cwd()}/package.json`).version}`
                     ];

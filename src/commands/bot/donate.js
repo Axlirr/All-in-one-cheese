@@ -4,19 +4,18 @@ module.exports = async (client, interaction, args) => {
     let row = new Discord.ActionRowBuilder()
         .addComponents(
             new Discord.ButtonBuilder()
-                .setLabel("CorwinDev GitHub")
-                .setURL("https://github.com/sponsors/CorwinDev")
+                .setLabel("GitHub")
+                .setURL("https://github.com/Axlirr/All-in-one-cheese")
                 .setStyle(Discord.ButtonStyle.Link),
         );
 
     client.embed({
         title: `${client.user.username}・Donate`,
-        desc: '_____ \n\nClick the button below for the sponsor page \n**Pay attention! sponsor is not required**',
+        desc: '_____ \n\nClick the button below for the repo page \n**Pay attention! sponsor is not required**',
         thumbnail: client.user.avatarURL({ dynamic: true }),
-        url: "https://github.com/sponsors/CorwinDev",
+        url: "https://github.com/Axlirr/All-in-one-cheese",
         components: [row],
         type: 'editreply'
     }, interaction)
 }
 
- 

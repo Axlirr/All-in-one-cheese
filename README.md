@@ -21,8 +21,8 @@
 * 3.1.0: https://discord.gg/M7DWTrYEWZ
 
 ### 💕Credit
-- Code By Corwin#0001
-- Modified By Uo#1428
+- Code By Arbaz
+- Modified By Arbaz
 
 ## ✨ Discord Profile
 <div align="center">

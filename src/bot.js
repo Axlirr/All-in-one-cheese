@@ -189,4 +189,4 @@ setInterval(() => {
     }
 }, ms("1m"));
 
-// Discord: dsc.gg/uoaio or Uo#0331
+// Discord: Bot by Arbaz
