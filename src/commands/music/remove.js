@@ -1,38 +1,36 @@
 const Discord = require('discord.js');
 
 module.exports = async (client, interaction, args) => {
-    const player = client.player.players.get(interaction.guild.id);
-    
-    const channel = interaction.member.voice.channel;
-    if (!channel) return client.errNormal({
+    const player = client.player;
+    const queue = player.nodes.get(interaction.guild.id);
+
+    if (!queue || !queue.isPlaying()) return client.errNormal({
+        error: "There is no music playing in this server",
+        type: 'editreply'
+    }, interaction);
+
+    if (!interaction.member.voice.channel) return client.errNormal({
         error: `You're not in a voice channel!`,
         type: 'editreply'
     }, interaction);
 
-    if (player && (channel.id !== player?.voiceChannel)) return client.errNormal({
-        error: `You're not in the same voice channel!`,
-        type: 'editreply'
-    }, interaction);
-
-    if (!player || !player.queue.current) return client.errNormal({
-        error: "There are no songs playing in this server",
+    if (interaction.guild.members.me.voice.channelId && interaction.member.voice.channelId !== interaction.guild.members.me.voice.channelId) return client.errNormal({
+        error: `You are not in the same voice channel!`,
         type: 'editreply'
     }, interaction);
 
     let number = interaction.options.getNumber('number');
 
-    if (number > player.queue.size) return client.errNormal({
-        error: `The queue doesn't have that much songs`,
+    if (number > queue.tracks.size || number <= 0) return client.errNormal({
+        error: `The queue doesn't have that many songs (1-${queue.tracks.size})`,
         type: 'editreply'
     }, interaction);
 
-    const targetSong = player.queue[parseInt(number - 1)]
-    player.queue.remove((parseInt(number)) - 1)
+    const track = queue.tracks.at(number - 1);
+    queue.node.remove(track);
 
-    client.succNormal({ 
-        text: `Removed **${targetSong.title}** from the queue`,
+    client.succNormal({
+        text: `Removed **${track.title}** from the queue!`,
         type: 'editreply'
     }, interaction);
 }
-
- 

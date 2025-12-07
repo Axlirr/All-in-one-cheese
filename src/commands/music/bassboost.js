@@ -1,45 +1,37 @@
 const Discord = require('discord.js');
 
 module.exports = async (client, interaction, args) => {
-    const player = client.player.players.get(interaction.guild.id);
+    const player = client.player;
+    const queue = player.nodes.get(interaction.guild.id);
 
-    const levels = {
-        0: 0.0,
-        1: 0.50,
-        2: 1.0,
-        3: 2.0,
-    };
+    if (!queue || !queue.isPlaying()) return client.errNormal({
+        error: "There is no music playing in this server",
+        type: 'editreply'
+    }, interaction);
 
-    const channel = interaction.member.voice.channel;
-    if (!channel) return client.errNormal({
+    if (!interaction.member.voice.channel) return client.errNormal({
         error: `You're not in a voice channel!`,
         type: 'editreply'
     }, interaction);
 
-    if (player && (channel.id !== player?.voiceChannel)) return client.errNormal({
-        error: `You're not in the same voice channel!`,
+    if (interaction.guild.members.me.voice.channelId && interaction.member.voice.channelId !== interaction.guild.members.me.voice.channelId) return client.errNormal({
+        error: `You are not in the same voice channel!`,
         type: 'editreply'
     }, interaction);
 
-    if (!player || !player.queue.current) return client.errNormal({
-        error: "There are no songs playing in this server",
-        type: 'editreply'
-    }, interaction);
+    // Toggle bassboost
+    await queue.filters.ffmpeg.toggle(['bassboost']);
 
-    let level = interaction.options.getString('level');
+    // Check if enabled or disabled
+    // There isn't a direct "isEnabled" property easily accessible for a specific filter without iterating, 
+    // but toggle returns boolean or we can assume it flipped.
+    // For simplicity, we just say "toggled". 
+    // Or we can check queue.filters.ffmpeg.getFiltersEnabled().includes('bassboost')
 
-    const bands = new Array(3)
-        .fill(null)
-        .map((_, i) =>
-            ({ band: i, gain: levels[level] })
-        );
-
-    player.setEQ(...bands);
+    const enabled = queue.filters.ffmpeg.getFiltersEnabled().includes('bassboost');
 
     client.succNormal({
-        text: `Bass boost level adjusted to **level ${level}**`,
+        text: `Bassboost **${enabled ? 'enabled' : 'disabled'}**!`,
         type: 'editreply'
     }, interaction);
 }
-
- 

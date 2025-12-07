@@ -1,30 +1,28 @@
 const Discord = require('discord.js');
 
 module.exports = async (client, interaction, args) => {
-    const player = client.player.players.get(interaction.guild.id);
+    const player = client.player;
+    const queue = player.nodes.get(interaction.guild.id);
 
-    const channel = interaction.member.voice.channel;
-    if (!channel) return client.errNormal({
+    if (!queue || !queue.isPlaying()) return client.errNormal({
+        error: "There is no music playing in this server",
+        type: 'editreply'
+    }, interaction);
+
+    if (!interaction.member.voice.channel) return client.errNormal({
         error: `You're not in a voice channel!`,
         type: 'editreply'
     }, interaction);
 
-    if (player && (channel.id !== player?.voiceChannel)) return client.errNormal({
-        error: `You're not in the same voice channel!`,
+    if (interaction.guild.members.me.voice.channelId && interaction.member.voice.channelId !== interaction.guild.members.me.voice.channelId) return client.errNormal({
+        error: `You are not in the same voice channel!`,
         type: 'editreply'
     }, interaction);
 
-    if (!player || !player.queue.current) return client.errNormal({
-        error: "There are no songs playing in this server",
-        type: 'editreply'
-    }, interaction);
-
-    player.pause(true)
+    queue.node.pause();
 
     client.succNormal({
-        text: `Paused the music!`,
+        text: `Music paused!`,
         type: 'editreply'
     }, interaction);
 }
-
- 

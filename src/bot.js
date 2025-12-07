@@ -1,11 +1,7 @@
 const Discord = require('discord.js');
 const fs = require('fs');
 
-const { Manager } = require("erela.js");
-const Spotify = require("erela.js-spotify");
-const Facebook = require("erela.js-facebook");
-const Deezer = require("erela.js-deezer");
-const AppleMusic = require("erela.js-apple");
+const { Player } = require("discord-player");
 
 // Discord client
 const client = new Discord.Client({
@@ -54,57 +50,18 @@ http.createServer((_, res) => res.end("UpTime")).listen(8080)
 
 const clientID = process.env.SPOTIFY_CLIENT_ID;
 const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
-if (clientID && clientSecret) {
-    // Lavalink client
-    client.player = new Manager({
-        plugins: [
-            new AppleMusic(),
-            new Deezer(),
-            new Facebook(),
-            new Spotify({
-                clientID,
-                clientSecret,
-            })
-        ],
-        nodes: [
-            {
-                host: process.env.LAVALINK_HOST || "lava.link",
-                port: parseInt(process.env.LAVALINK_PORT) || 80,
-                password: process.env.LAVALINK_PASSWORD || "CorwinDev"
-            },
-        ],
-        send(id, payload) {
-            const guild = client.guilds.cache.get(id);
-            if (guild) guild.shard.send(payload);
-        },
-    })
 
-} else {
-    // Lavalink client
-    client.player = new Manager({
-        plugins: [
-            new AppleMusic(),
-            new Deezer(),
-            new Facebook(),
-        ],
-        nodes: [
-            {
-                host: process.env.LAVALINK_HOST || "lava.link",
-                port: parseInt(process.env.LAVALINK_PORT) || 80,
-                password: process.env.LAVALINK_PASSWORD || "CorwinDev"
-            },
-        ],
-        send(id, payload) {
-            const guild = client.guilds.cache.get(id);
-            if (guild) guild.shard.send(payload);
-        }
-    })
-}
+const player = new Player(client);
+client.player = player;
+
+(async () => {
+    await player.extractors.loadDefault();
+})();
 const events = fs.readdirSync(`./src/events/music`).filter(files => files.endsWith('.js'));
 
 for (const file of events) {
     const event = require(`./events/music/${file}`);
-    client.player.on(file.split(".")[0], event.bind(null, client)).setMaxListeners(0);
+    client.player.events.on(file.split(".")[0], event.bind(null, client));
 };
 
 // Connect to database
@@ -160,7 +117,7 @@ process.on('unhandledRejection', error => {
     if (!consoleLogs) return;
     if (error) if (error.length > 950) error = error.slice(0, 950) + '... view console for details';
     if (error.stack) if (error.stack.length > 950) error.stack = error.stack.slice(0, 950) + '... view console for details';
-    if(!error.stack) return
+    if (!error.stack) return
     const embed = new Discord.EmbedBuilder()
         .setTitle(`🚨・Unhandled promise rejection`)
         .addFields([
@@ -177,7 +134,7 @@ process.on('unhandledRejection', error => {
     consoleLogs.send({
         username: 'Bot Logs',
         embeds: [embed],
-    }).catch(() => {});
+    }).catch(() => { });
 });
 
 process.on('warning', warn => {
@@ -195,7 +152,7 @@ process.on('warning', warn => {
     warnLogs.send({
         username: 'Bot Logs',
         embeds: [embed],
-    }).catch(() => {});
+    }).catch(() => { });
 });
 
 client.on(Discord.ShardEvents.Error, error => {
@@ -220,16 +177,16 @@ client.on(Discord.ShardEvents.Error, error => {
     consoleLogs.send({
         username: 'Bot Logs',
         embeds: [embed],
-    }).catch(() => {});
+    }).catch(() => { });
 });
 
 // auto kill
 const ms = require("ms");
 setInterval(() => {
-  if (!client || !client.user) {
-    console.log("Client Not Login, Process Kill")
-    process.kill(1);
-  }
+    if (!client || !client.user) {
+        console.log("Client Not Login, Process Kill")
+        process.kill(1);
+    }
 }, ms("1m"));
 
 // Discord: dsc.gg/uoaio or Uo#0331

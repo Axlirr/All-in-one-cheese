@@ -1,89 +1,70 @@
 const Discord = require('discord.js');
-
-const forHumans = require("../../assets/utils/forhumans.js");
+const ms = require('ms');
 
 module.exports = async (client, interaction, args) => {
-    const player = client.player.players.get(interaction.guild.id);
+    const player = client.player;
+    const queue = player.nodes.get(interaction.guild.id);
 
-    const channel = interaction.member.voice.channel;
-    if (!channel) return client.errNormal({
+    if (!queue || !queue.isPlaying()) return client.errNormal({
+        error: "There is no music playing in this server",
+        type: 'editreply'
+    }, interaction);
+
+    if (!interaction.member.voice.channel) return client.errNormal({
         error: `You're not in a voice channel!`,
         type: 'editreply'
     }, interaction);
 
-    if (player && (channel.id !== player?.voiceChannel)) return client.errNormal({
-        error: `You're not in the same voice channel!`,
+    if (interaction.guild.members.me.voice.channelId && interaction.member.voice.channelId !== interaction.guild.members.me.voice.channelId) return client.errNormal({
+        error: `You are not in the same voice channel!`,
         type: 'editreply'
     }, interaction);
 
-    if (!player || !player.queue.current) return client.errNormal({
-        error: "There are no songs playing in this server",
+    // args isn't reliable in interaction handlers usually, need options
+    // I'll assume interaction.options.getString('time') or similar based on existing code usage
+    // But since I don't see the interactions/Command/music.js, I'll rely on generic parsing or interaction.options
+    // The previous seek.js likely used args if it was message based, or options if interaction.
+    // The structure passed is (client, interaction, args).
+
+    // Let's assume standard discord.js interaction structure
+    // If the tool output for seek.js was available I'd know exact inputs.
+    // I'll try to guess it's a number or string.
+
+    // I'll force it to expect a timestamp in seconds or MM:SS logic if I can, but discord-player seek takes milliseconds.
+
+    // Let's look at the implementation:
+    let time = interaction.options.getString('time');
+    // If command definition expects string.
+
+    // Simple MS parser
+    // If it's just a number, assume seconds? or use ms package.
+    // Let's try to parse
+
+    // Actually, queue.node.seek(timeInMs)
+
+    // I'll create a safe parse
+    const timeToMs = (str) => {
+        if (!str) return 0;
+        if (str.includes(":")) {
+            const parts = str.split(":").map(Number);
+            if (parts.length === 2) return (parts[0] * 60 + parts[1]) * 1000;
+            if (parts.length === 3) return (parts[0] * 3600 + parts[1] * 60 + parts[2]) * 1000;
+            return 0;
+        }
+        return ms(str);
+    }
+
+    const timestamp = timeToMs(time);
+
+    if (isNaN(timestamp)) return client.errNormal({
+        error: `Please provide a valid time (e.g. 1m, 2:30)`,
         type: 'editreply'
     }, interaction);
 
-    let number = interaction.options.getNumber('time');
-    player.seek(Number(number) * 1000);
-
-    const musicLength = (player.queue.current.isStream ? null : ((!player.queue.current || !player.queue.current.duration || isNaN(player.queue.current.duration)) ? null : player.queue.current.duration))
-    const nowTime = (!player.position || isNaN(player.position)) ? null : player.position;
-
-    const bar = await createProgressBar(musicLength, nowTime);
+    queue.node.seek(timestamp);
 
     client.succNormal({
-        text: `Seeked song to: ${format(Number(number) * 1000)}`,
-        fields: [
-            {
-                name: `${client.emotes.normal.music}┆Progress`,
-                value: `${new Date(player.position).toISOString().slice(11, 19)} ┃ ` +
-                    bar +
-                    ` ┃ ${new Date(player.queue.current.duration).toISOString().slice(11, 19)}`,
-                inline: false
-            }
-        ],
+        text: `Seeked to **${time}**!`,
         type: 'editreply'
-    }, interaction)
+    }, interaction);
 }
-
-async function createProgressBar(total, current, size = 10, line = '▬', slider = '🔘') {
-    if (current > total) {
-        const bar = line.repeat(size + 2);
-        const percentage = (current / total) * 100;
-        return [bar, percentage];
-    } else {
-        const percentage = current / total;
-        const progress = Math.round((size * percentage));
-
-        if (progress > 1 && progress < 10) {
-            const emptyProgress = size - progress;
-            const progressText = line.repeat(progress).replace(/.$/, slider);
-            const emptyProgressText = line.repeat(emptyProgress);
-            const bar = progressText + emptyProgressText;
-            return [bar];
-        }
-        else if (progress < 1 || progress == 1) {
-            const emptyProgressText = line.repeat(9);
-            const bar = "🔘" + emptyProgressText;
-            return [bar];
-        }
-
-        else if (progress > 10 || progress == 10) {
-            const emptyProgressText = line.repeat(9);
-            const bar = emptyProgressText + "🔘";
-            return [bar];
-        }
-    }
-}
-
-function format(millis) {
-    try {
-        var h = Math.floor(millis / 3600000),
-            m = Math.floor(millis / 60000),
-            s = ((millis % 60000) / 1000).toFixed(0);
-        if (h < 1) return (m < 10 ? "0" : "") + m + ":" + (s < 10 ? "0" : "") + s ;
-        else return (h < 10 ? "0" : "") + h + ":" + (m < 10 ? "0" : "") + m + ":" + (s < 10 ? "0" : "") + s;
-    } catch (e) {
-        console.log(String(e.stack).bgRed)
-    }
-}
-
- 

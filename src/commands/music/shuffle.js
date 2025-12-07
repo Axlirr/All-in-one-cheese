@@ -1,35 +1,28 @@
 const Discord = require('discord.js');
 
 module.exports = async (client, interaction, args) => {
-    const player = client.player.players.get(interaction.guild.id);
-    
-    const channel = interaction.member.voice.channel;
-    if (!channel) return client.errNormal({
+    const player = client.player;
+    const queue = player.nodes.get(interaction.guild.id);
+
+    if (!queue || !queue.isPlaying()) return client.errNormal({
+        error: "There is no music playing in this server",
+        type: 'editreply'
+    }, interaction);
+
+    if (!interaction.member.voice.channel) return client.errNormal({
         error: `You're not in a voice channel!`,
         type: 'editreply'
     }, interaction);
 
-    if (player && (channel.id !== player?.voiceChannel)) return client.errNormal({
-        error: `You're not in the same voice channel!`,
+    if (interaction.guild.members.me.voice.channelId && interaction.member.voice.channelId !== interaction.guild.members.me.voice.channelId) return client.errNormal({
+        error: `You are not in the same voice channel!`,
         type: 'editreply'
     }, interaction);
 
-    if (!player || !player.queue.current) return client.errNormal({
-        error: "There are no songs playing in this server",
-        type: 'editreply'
-    }, interaction);
-
-    if (player.queue.size === 0) return client.errNormal({
-        error: "Not enough song to shuffle",
-        type: 'editreply'
-    }, interaction);
-
-    player.queue.shuffle()
+    queue.tracks.shuffle();
 
     client.succNormal({
-        text: `Shuffled the queue!`,
+        text: `Queue shuffled!`,
         type: 'editreply'
     }, interaction);
 }
-
- 
