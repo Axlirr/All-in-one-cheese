@@ -71,7 +71,8 @@
     "weather-js": "^2.0.0",
     "ytdl-core": "^4.11.2"
   },
-  "devDependencies": {
-    "node": "^17.9.1"
-  }
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "devDependencies": {}
 }
