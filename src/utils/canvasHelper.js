@@ -24,10 +24,17 @@ try {
  * Check if canvas packages are available and return error if not
  * @param {Object} client - Discord client
  * @param {Object} interaction - Discord interaction
- * @returns {Object|null} Returns error object if canvas unavailable, null if available
+ * @param {string} [packageName='canvas'] - Package to check: 'canvacord', 'dig', or 'canvas' (default checks for any available canvas package)
+ * @returns {boolean} Returns true if canvas unavailable (error shown), false if available
  */
 function checkCanvasAvailable(client, interaction, packageName = 'canvas') {
-    const pkg = packageName === 'canvacord' ? Canvacord : (packageName === 'dig' ? DIG : (Canvas || Canvacord || DIG));
+    const packages = {
+        'canvacord': Canvacord,
+        'dig': DIG,
+        'canvas': Canvas || Canvacord || DIG
+    };
+    
+    const pkg = packages[packageName];
     
     if (!pkg) {
         client.errNormal({
