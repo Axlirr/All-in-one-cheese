@@ -1,22 +1,20 @@
 const Discord = require('discord.js');
+const { Canvacord } = require("../../utils/canvasHelper");
 
 const Functions = require("../../database/models/functions");
 const Schema = require("../../database/models/levels");
 
 module.exports = async (client, interaction, args) => {
-    let Canvacord;
-    try {
-        Canvacord = require("canvacord");
-    } catch (error) {
-        return client.errNormal({
-            error: "This command requires canvas packages that are not available in this environment.",
-            type: 'editreply'
-        }, interaction);
-    }
-
     const data = await Functions.findOne({ Guild: interaction.guild.id });
 
     if (data && data.Levels == true) {
+        if (!Canvacord) {
+            return client.errNormal({
+                error: "This command requires canvas packages that are not available in this environment.",
+                type: 'editreply'
+            }, interaction);
+        }
+
         const target = interaction.options.getUser('user') || interaction.user;
         const user = await client.fetchLevels(target.id, interaction.guild.id);
         if(!user || !user.xp) return client.errNormal({

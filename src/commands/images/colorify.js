@@ -1,15 +1,8 @@
 const Discord = require('discord.js');
+const { Canvas, checkCanvasAvailable } = require("../../utils/canvasHelper");
 
 module.exports = async (client, interaction, args) => {
-    let Canvas;
-    try {
-        Canvas = require("canvacord").Canvas;
-    } catch (error) {
-        return client.errNormal({
-            error: "This command requires canvas packages that are not available in this environment.",
-            type: 'editreply'
-        }, interaction);
-    }
+    if (checkCanvasAvailable(client, interaction)) return;
 
     const member = interaction.options.getUser('user');
 

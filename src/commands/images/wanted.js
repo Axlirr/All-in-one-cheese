@@ -1,15 +1,8 @@
 const Discord = require('discord.js');
+const { DIG, checkCanvasAvailable } = require("../../utils/canvasHelper");
 
 module.exports = async (client, interaction, args) => {
-    let DIG;
-    try {
-        DIG = require("discord-image-generation");
-    } catch (error) {
-        return client.errNormal({
-            error: "This command requires canvas packages that are not available in this environment.",
-            type: 'editreply'
-        }, interaction);
-    }
+    if (checkCanvasAvailable(client, interaction, 'dig')) return;
 
     const user = interaction.options.getUser('user') || interaction.user;
 
