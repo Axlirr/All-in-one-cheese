@@ -28,7 +28,6 @@
   "license": "ISC",
   "dependencies": {
     "@discordjs/voice": "^0.14.0",
-    "@haileybot/captcha-generator": "^1.7.0",
     "@iamtraction/google-translate": "^2.0.1",
     "@top-gg/sdk": "^3.1.3",
     "axios": "^1.2.2",
@@ -68,6 +67,7 @@
     "ytdl-core": "^4.11.2"
   },
   "optionalDependencies": {
+    "@haileybot/captcha-generator": "^1.7.0",
     "canvacord": "^5.4.8",
     "discord-image-generation": "^1.4.23"
   },

@@ -1,5 +1,12 @@
 const Discord = require('discord.js');
-const Captcha = require("@haileybot/captcha-generator");
+
+let Captcha;
+try {
+    Captcha = require("@haileybot/captcha-generator");
+} catch (error) {
+    // Captcha generator not available - this is okay, verify system will handle gracefully
+    Captcha = null;
+}
 
 const reactionSchema = require("../../database/models/reactionRoles");
 const banSchema = require("../../database/models/userBans");
@@ -79,6 +86,13 @@ module.exports = async (client, interaction) => {
     if (interaction.isButton() && interaction.customId == "Bot_verify") {
         const data = await verify.findOne({ Guild: interaction.guild.id, Channel: interaction.channel.id });
         if (data) {
+            if (!Captcha) {
+                return interaction.reply({ 
+                    content: "Verification system requires canvas packages that are not available in this environment.", 
+                    ephemeral: true 
+                });
+            }
+            
             let captcha = new Captcha();
 
             try {
