@@ -1,5 +1,4 @@
 const Discord = require('discord.js');
-const Canvacord = require("canvacord");
 
 const Functions = require("../../database/models/functions");
 const Schema = require("../../database/models/levels");

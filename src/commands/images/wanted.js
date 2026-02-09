@@ -1,7 +1,16 @@
 const Discord = require('discord.js');
-const DIG = require("discord-image-generation");
 
 module.exports = async (client, interaction, args) => {
+    let DIG;
+    try {
+        DIG = require("discord-image-generation");
+    } catch (error) {
+        return client.errNormal({
+            error: "This command requires canvas packages that are not available in this environment.",
+            type: 'editreply'
+        }, interaction);
+    }
+
     const user = interaction.options.getUser('user') || interaction.user;
 
     let userAvatar = user.displayAvatarURL({ size: 1024, dynamic: false, extension: 'png' });
