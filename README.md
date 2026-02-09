@@ -12,6 +12,35 @@
 - Watch YouTube Video: [Click Here](https://youtu.be/CQP6M9AbO_E)
 ---
 
+## 🚀 Cloudflare Workers Deployment
+
+This bot has been optimized for Cloudflare Workers deployment. Some features that require native dependencies (canvas rendering) are optional and will be disabled if not available:
+
+### Optional Features (disabled in Cloudflare Workers):
+- **Image manipulation commands** (bed, blur, burn, colorify, darkness, facepalm, greyscale, kiss, podium, spank, wanted, clyde)
+- **Rank card generation** (rank command)
+- **Captcha verification system**
+
+### Installation Options:
+
+**For Cloudflare Workers (without canvas):**
+```bash
+npm install --omit=optional
+# or
+bun install --optional=false
+```
+
+**For standard Node.js servers (with all features):**
+```bash
+npm install
+# or
+bun install
+```
+
+Note: Standard installation requires system dependencies (cairo, pango, pixman) which are not available in Cloudflare Workers environment.
+
+---
+
 ### 💘 Emotes Servers 
 
 * 1.0: https://discord.gg/RjHTDAQHkR
