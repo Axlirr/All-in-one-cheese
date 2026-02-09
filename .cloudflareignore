@@ -1,0 +1,6 @@
+# This file exists to prevent accidental deployment to Cloudflare
+# Discord bots CANNOT run on Cloudflare Workers/Pages
+# See DEPLOYMENT.md for compatible deployment platforms
+
+# This bot requires persistent WebSocket connections
+# which are not supported by Cloudflare's serverless platform
