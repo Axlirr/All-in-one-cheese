@@ -31,7 +31,7 @@ These files ensure that Cloudflare Workers and similar platforms can build witho
 
 ### Installation Options:
 
-**For Cloudflare Workers (without canvas) - Automatic:**
+**For Cloudflare Workers and production deployment (default):**
 ```bash
 npm install
 # or
@@ -45,15 +45,15 @@ npm install --include=optional
 # or
 bun install --optional
 ```
+This installs canvas packages for full functionality. Requires system dependencies (cairo, pango, pixman).
 
-**Manual installation without optional deps:**
+**Manual override (if needed):**
 ```bash
+# Skip optional dependencies without config files
 npm install --omit=optional
 # or
 bun install --optional=false
 ```
-
-Note: Full installation requires system dependencies (cairo, pango, pixman) which are not available in Cloudflare Workers environment.
 
 ---
 
