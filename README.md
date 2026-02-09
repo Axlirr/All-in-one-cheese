@@ -21,23 +21,39 @@ This bot has been optimized for Cloudflare Workers deployment. Some features tha
 - **Rank card generation** (rank command)
 - **Captcha verification system**
 
+### Build Configuration
+
+The repository includes configuration files that automatically skip optional dependencies during build:
+- **`.npmrc`** - Configures npm to skip optional dependencies
+- **`bunfig.toml`** - Configures bun to skip optional dependencies
+
+These files ensure that Cloudflare Workers and similar platforms can build without requiring native system dependencies.
+
 ### Installation Options:
 
-**For Cloudflare Workers (without canvas):**
+**For Cloudflare Workers (without canvas) - Automatic:**
+```bash
+npm install
+# or
+bun install
+```
+The `.npmrc` and `bunfig.toml` files automatically skip optional dependencies.
+
+**For local development with all features:**
+```bash
+npm install --include=optional
+# or
+bun install --optional
+```
+
+**Manual installation without optional deps:**
 ```bash
 npm install --omit=optional
 # or
 bun install --optional=false
 ```
 
-**For standard Node.js servers (with all features):**
-```bash
-npm install
-# or
-bun install
-```
-
-Note: Standard installation requires system dependencies (cairo, pango, pixman) which are not available in Cloudflare Workers environment.
+Note: Full installation requires system dependencies (cairo, pango, pixman) which are not available in Cloudflare Workers environment.
 
 ---
 

@@ -1,0 +1,4 @@
+# Bun configuration file
+# Skip optional dependencies to avoid canvas build failures
+[install]
+optional = false
