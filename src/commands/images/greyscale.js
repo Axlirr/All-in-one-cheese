@@ -1,6 +1,8 @@
 const Discord = require('discord.js');
-const { Canvas } = require("canvacord");
+const { Canvas, checkCanvasAvailable } = require("../../utils/canvasHelper");
+
 module.exports = async (client, interaction, args) => {
+    if (checkCanvasAvailable(client, interaction)) return;
 
     const member = interaction.options.getUser('user');
 

@@ -10,6 +10,88 @@
 
 # How to setup the bot?
 - Watch YouTube Video: [Click Here](https://youtu.be/CQP6M9AbO_E)
+- **📖 [Deployment Guide](DEPLOYMENT.md)** - Detailed instructions for deploying on various platforms
+---
+
+## ⚠️ Important: Deployment Platform Compatibility
+
+### ❌ **NOT Compatible with Cloudflare Workers**
+
+**This Discord bot CANNOT run on Cloudflare Workers, Cloudflare Pages, or similar serverless platforms.**
+
+**Why?**
+- Discord bots require **persistent WebSocket connections** to Discord's Gateway
+- Cloudflare Workers are **stateless serverless functions** that cannot maintain long-lived connections
+- Discord bots need to run continuously, while Workers are event-driven with short execution times
+
+If you see an error like "Missing entry-point to Worker script" when deploying to Cloudflare, this is expected - the platform is incompatible with Discord bots.
+
+### ✅ **Compatible Deployment Options:**
+
+This bot should be deployed on platforms that support long-running Node.js processes:
+
+1. **VPS/Cloud Servers**
+   - DigitalOcean Droplets
+   - AWS EC2
+   - Google Cloud Compute Engine
+   - Linode
+   - Vultr
+
+2. **Platform-as-a-Service (PaaS)**
+   - [Railway](https://railway.app/) - Easy deployment, generous free tier
+   - [Heroku](https://heroku.com/) - Traditional PaaS
+   - [Render](https://render.com/) - Modern PaaS
+   - [Fly.io](https://fly.io/) - Distributed platform
+
+3. **Container Platforms**
+   - Use the included `Dockerfile`
+   - Deploy to any container platform (Railway, Render, DigitalOcean App Platform, etc.)
+
+4. **Local/Self-Hosted**
+   - Run on your own computer or home server
+   - Keep the terminal/process running 24/7
+
+### Installation & Build Configuration
+
+The repository includes configuration files that automatically skip optional dependencies during build:
+- **`.npmrc`** - Configures npm to skip optional dependencies
+- **`bunfig.toml`** - Configures bun to skip optional dependencies
+
+These files ensure successful builds without canvas native dependencies.
+
+### Installation Options:
+
+**Standard installation (recommended):**
+```bash
+npm install
+# or
+bun install
+```
+The `.npmrc` and `bunfig.toml` files automatically skip optional dependencies.
+
+**For local development with all features:**
+```bash
+npm install --include=optional
+# or
+bun install --optional
+```
+This installs canvas packages for image manipulation features. Requires system dependencies (cairo, pango, pixman).
+
+### Optional Features
+
+The following features require canvas packages and will be disabled if not installed:
+- **Image manipulation commands** (bed, blur, burn, colorify, darkness, facepalm, greyscale, kiss, podium, spank, wanted, clyde)
+- **Rank card generation** (rank command)
+- **Captcha verification system**
+
+### Running the Bot
+
+```bash
+npm start
+# or
+node . --trace-warnings
+```
+
 ---
 
 ### 💘 Emotes Servers 

@@ -1,6 +1,8 @@
-const { Canvas } = require("canvacord");
 const Discord = require("discord.js");
+const { Canvas, checkCanvasAvailable } = require("../../utils/canvasHelper");
+
 module.exports = async (client, interaction, args) => {
+    if (checkCanvasAvailable(client, interaction)) return;
 
     const clydeMessage = interaction.options.getString('text');
 

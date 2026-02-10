@@ -1,7 +1,8 @@
 const Discord = require('discord.js');
-const DIG = require("discord-image-generation");
+const { DIG, checkCanvasAvailable } = require("../../utils/canvasHelper");
 
 module.exports = async (client, interaction, args) => {
+    if (checkCanvasAvailable(client, interaction, 'dig')) return;
 
     const member = interaction.options.getUser('user');
 
