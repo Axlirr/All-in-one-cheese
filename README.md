@@ -28,6 +28,7 @@
 [![Node.js CI](https://github.com/Axlirr/All-in-one-cheese/workflows/Node.js%20CI/badge.svg)](https://github.com/Axlirr/All-in-one-cheese/actions/workflows/node.js.yml)
 [![CodeQL](https://github.com/Axlirr/All-in-one-cheese/workflows/CodeQL/badge.svg)](https://github.com/Axlirr/All-in-one-cheese/actions/workflows/codeql.yml)
 [![Dependency Review](https://github.com/Axlirr/All-in-one-cheese/workflows/Dependency%20Review/badge.svg)](https://github.com/Axlirr/All-in-one-cheese/actions/workflows/dependency-review.yml)
+[![Link Checker](https://github.com/Axlirr/All-in-one-cheese/workflows/Link%20Checker/badge.svg)](https://github.com/Axlirr/All-in-one-cheese/actions/workflows/link-checker.yml)
 
 <!-- Code Quality Badges -->
 [![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/Axlirr/All-in-one-cheese)](https://github.com/Axlirr/All-in-one-cheese)
@@ -56,22 +57,47 @@
 [![Made with Love](https://img.shields.io/badge/Made%20with-❤️-red.svg)](https://github.com/Axlirr/All-in-one-cheese)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/Axlirr/All-in-one-cheese/pulls)
 [![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
+[![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
+[![Good First Issues](https://img.shields.io/github/issues/Axlirr/All-in-one-cheese/good%20first%20issue)](https://github.com/Axlirr/All-in-one-cheese/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
+[![Help Wanted](https://img.shields.io/github/issues/Axlirr/All-in-one-cheese/help%20wanted)](https://github.com/Axlirr/All-in-one-cheese/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22)
 
 <!-- Platform & Technology Badges -->
 [![Discord.js](https://img.shields.io/badge/Library-Discord.js-5865F2?logo=discord&logoColor=white)](https://discord.js.org)
 [![MongoDB](https://img.shields.io/badge/Database-MongoDB-47A248?logo=mongodb&logoColor=white)](https://www.mongodb.com)
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker&logoColor=white)](https://www.docker.com)
 [![Replit](https://img.shields.io/badge/Deploy-Replit-F26207?logo=replit&logoColor=white)](https://replit.com)
+[![npm](https://img.shields.io/badge/npm-Dependencies-CB3837?logo=npm&logoColor=white)](https://www.npmjs.com)
+[![FFmpeg](https://img.shields.io/badge/FFmpeg-Supported-007808?logo=ffmpeg&logoColor=white)](https://ffmpeg.org)
+
+<!-- Build & Environment Badges -->
+[![GitHub package.json dependency version (prod)](https://img.shields.io/github/package-json/dependency-version/Axlirr/All-in-one-cheese/discord.js)](https://github.com/Axlirr/All-in-one-cheese/blob/main/package.json)
+[![GitHub package.json dependency version (prod)](https://img.shields.io/github/package-json/dependency-version/Axlirr/All-in-one-cheese/mongoose)](https://github.com/Axlirr/All-in-one-cheese/blob/main/package.json)
 
 <!-- Quality & Standards Badges -->
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
+[![Keep a Changelog](https://img.shields.io/badge/changelog-Keep%20a%20Changelog-E05735)](https://keepachangelog.com)
+
+<!-- Environment & Platform Support -->
+[![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20macOS%20%7C%20Windows-blue)]()
+[![Tested on](https://img.shields.io/badge/tested%20on-Ubuntu%20%7C%20Windows-success)]()
+[![Works on](https://img.shields.io/badge/works%20on-my%20machine-success)](https://github.com/nikku/works-on-my-machine)
 
 <!-- Stats Badges -->
 [![Profile Views](https://komarev.com/ghpvc/?username=Axlirr&label=Profile%20views&color=0e75b6&style=flat)](https://github.com/Axlirr)
 [![GitHub Sponsors](https://img.shields.io/github/sponsors/Axlirr?logo=github)](https://github.com/sponsors/Axlirr)
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FAxlirr%2FAll-in-one-cheese&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
+
+<!-- Release Badges -->
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/Axlirr/All-in-one-cheese)](https://github.com/Axlirr/All-in-one-cheese/releases)
+[![GitHub Release Date](https://img.shields.io/github/release-date/Axlirr/All-in-one-cheese)](https://github.com/Axlirr/All-in-one-cheese/releases)
+[![GitHub commits since latest release](https://img.shields.io/github/commits-since/Axlirr/All-in-one-cheese/latest)](https://github.com/Axlirr/All-in-one-cheese/commits)
+
+<!-- Additional Metrics -->
+[![GitHub search hit counter](https://img.shields.io/github/search/Axlirr/All-in-one-cheese/discord)](https://github.com/Axlirr/All-in-one-cheese)
+[![GitHub package.json version](https://img.shields.io/github/package-json/v/Axlirr/All-in-one-cheese)](https://github.com/Axlirr/All-in-one-cheese/blob/main/package.json)
+[![Website](https://img.shields.io/website?down_color=red&down_message=offline&up_color=green&up_message=online&url=https%3A%2F%2Fgithub.com%2FAxlirr%2FAll-in-one-cheese)](https://github.com/Axlirr/All-in-one-cheese)
 
 ![image](https://images-ext-2.discordapp.net/external/g3g819pEvW-xa-WU2rqgFRFkhuPflF4_mxoK63VPZ0A/https/storage.googleapis.com/replit/images/1671693930209_5b7ac25cf82388ebc5dc9793fa0bbc97.png)
 
