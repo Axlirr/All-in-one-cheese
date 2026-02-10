@@ -53,6 +53,17 @@ module.exports = {
             subcommand
                 .setName('leaderboard')
                 .setDescription('See the message leaderboard')
+                .addStringOption(option =>
+                    option.setName('period')
+                        .setDescription('Select the leaderboard period')
+                        .addChoices(
+                            { name: 'All time', value: 'all' },
+                            { name: 'Daily', value: 'daily' },
+                            { name: 'Weekly', value: 'weekly' },
+                            { name: 'Monthly', value: 'monthly' },
+                            { name: 'Yearly', value: 'yearly' }
+                        )
+                )
         )
     ,
 
@@ -68,4 +79,3 @@ module.exports = {
     },
 };
 
- 

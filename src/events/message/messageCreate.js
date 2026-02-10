@@ -13,6 +13,24 @@ const Commands = require("../../database/models/customCommand");
 const CommandsSchema = require("../../database/models/customCommandAdvanced");
 const fetch = require("node-fetch");
 
+const getDailyKey = (date) => date.toISOString().slice(0, 10);
+
+const getWeekKey = (date) => {
+  const utcDate = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
+  const day = utcDate.getUTCDay() || 7;
+  utcDate.setUTCDate(utcDate.getUTCDate() + 4 - day);
+  const yearStart = new Date(Date.UTC(utcDate.getUTCFullYear(), 0, 1));
+  const week = Math.ceil((((utcDate - yearStart) / 86400000) + 1) / 7);
+  return `${utcDate.getUTCFullYear()}-W${String(week).padStart(2, '0')}`;
+};
+
+const getMonthKey = (date) => {
+  const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+  return `${date.getUTCFullYear()}-${month}`;
+};
+
+const getYearKey = (date) => String(date.getUTCFullYear());
+
 /**
  * 
  * @param {Discord.Client} client 
@@ -148,7 +166,37 @@ module.exports = async (client, message) => {
     { Guild: message.guild.id, User: message.author.id },
     async (err, data) => {
       if (data) {
-        data.Messages += 1;
+        const now = new Date();
+        const dailyKey = getDailyKey(now);
+        const weeklyKey = getWeekKey(now);
+        const monthlyKey = getMonthKey(now);
+        const yearlyKey = getYearKey(now);
+
+        if (!data.LastDaily || data.LastDaily !== dailyKey) {
+          data.LastDaily = dailyKey;
+          data.DailyMessages = 0;
+        }
+
+        if (!data.LastWeekly || data.LastWeekly !== weeklyKey) {
+          data.LastWeekly = weeklyKey;
+          data.WeeklyMessages = 0;
+        }
+
+        if (!data.LastMonthly || data.LastMonthly !== monthlyKey) {
+          data.LastMonthly = monthlyKey;
+          data.MonthlyMessages = 0;
+        }
+
+        if (!data.LastYearly || data.LastYearly !== yearlyKey) {
+          data.LastYearly = yearlyKey;
+          data.YearlyMessages = 0;
+        }
+
+        data.Messages = (data.Messages || 0) + 1;
+        data.DailyMessages = (data.DailyMessages || 0) + 1;
+        data.WeeklyMessages = (data.WeeklyMessages || 0) + 1;
+        data.MonthlyMessages = (data.MonthlyMessages || 0) + 1;
+        data.YearlyMessages = (data.YearlyMessages || 0) + 1;
         data.save();
 
         messageRewards.findOne(
@@ -164,10 +212,24 @@ module.exports = async (client, message) => {
           }
         );
       } else {
+        const now = new Date();
+        const dailyKey = getDailyKey(now);
+        const weeklyKey = getWeekKey(now);
+        const monthlyKey = getMonthKey(now);
+        const yearlyKey = getYearKey(now);
+
         new messagesSchema({
           Guild: message.guild.id,
           User: message.author.id,
           Messages: 1,
+          DailyMessages: 1,
+          WeeklyMessages: 1,
+          MonthlyMessages: 1,
+          YearlyMessages: 1,
+          LastDaily: dailyKey,
+          LastWeekly: weeklyKey,
+          LastMonthly: monthlyKey,
+          LastYearly: yearlyKey,
         }).save();
       }
     }
@@ -252,7 +314,7 @@ module.exports = async (client, message) => {
         })
         .then((res) => {
           res.json().then((data) => {
-            if(data.error) return console.log(data.error);
+            if (data.error) return console.log(data.error);
             message.reply({ content: data.choices[0].text });
           });
         });
@@ -265,7 +327,7 @@ module.exports = async (client, message) => {
           )
             .catch(() => { console.log })
             .then((res) => res.json())
-            .catch(() => { console.log})
+            .catch(() => { console.log })
             .then(async (json) => {
               console.log(json);
               if (json) {
