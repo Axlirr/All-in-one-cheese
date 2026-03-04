@@ -4,9 +4,10 @@
   "description": "All-in-one Discord bot with moderation, automation, music, and analytics features.",
   "main": "./src/index.js",
   "scripts": {
-    "test": "node -e \"console.log('No tests configured yet')\"",
+    "test": "node scripts/command-health-check.js",
     "start": "node . --trace-warnings",
-    "add-dev": "node src/dev.js"
+    "add-dev": "node src/dev.js",
+    "health:commands": "node scripts/command-health-check.js"
   },
   "keywords": [
     "Music",

@@ -1,49 +1,41 @@
-const Discord = require('discord.js');
+const Schema2 = require('../../database/models/economyTimeout');
 
-const Schema = require("../../database/models/economy");
-const Schema2 = require("../../database/models/economyTimeout");
+module.exports = async (client, interaction) => {
+    const user = interaction.user;
+    const timeout = 86400000;
+    const amount = 200;
 
-module.exports = async (client, interaction, args) => {
-  let user = interaction.user;
-  let timeout = 86400000;
-  let amount = 200;
+    const dataTime = await Schema2.findOne({ Guild: interaction.guild.id, User: user.id });
+    const lastDaily = Number(dataTime?.Daily || 0);
 
-  Schema2.findOne({ Guild: interaction.guild.id, User: user.id }, async (err, dataTime) => {
-    if (dataTime && dataTime.Daily !== null && timeout - (Date.now() - dataTime.Daily) > 0) {
-      let time = (dataTime.Daily / 1000 + timeout / 1000).toFixed(0);
-      return client.errWait({
-        time: time,
-        type: 'editreply'
-      }, interaction);
+    if (lastDaily && timeout - (Date.now() - lastDaily) > 0) {
+        const time = (lastDaily / 1000 + timeout / 1000).toFixed(0);
+        return client.errWait({
+            time,
+            type: 'editreply'
+        }, interaction);
     }
-    else {
 
-      client.succNormal({
+    await Schema2.updateOne(
+        { Guild: interaction.guild.id, User: user.id },
+        {
+            $setOnInsert: { Guild: interaction.guild.id, User: user.id },
+            $set: { Daily: Date.now() }
+        },
+        { upsert: true }
+    );
+
+    await client.addMoney(interaction, user, amount);
+
+    return client.succNormal({
         text: `You've collected your daily reward!`,
         fields: [
-          {
-            name: `${client.emotes.economy.coins}┆Amount`,
-            value: `${amount} cheese coins`,
-            inline: true
-          }
+            {
+                name: `${client.emotes.economy.coins}┆Amount`,
+                value: `${amount} cheese coins`,
+                inline: true
+            }
         ],
         type: 'editreply'
-      }, interaction);
-
-      if (dataTime) {
-        dataTime.Daily = Date.now();
-        dataTime.save();
-      }
-      else {
-        new Schema2({
-          Guild: interaction.guild.id,
-          User: user.id,
-          Daily: Date.now()
-        }).save();
-      }
-
-      client.addMoney(interaction, user, amount);
-    }
-  })
+    }, interaction);
 }
-

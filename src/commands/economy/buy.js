@@ -1,114 +1,124 @@
 const Discord = require('discord.js');
+const Schema = require('../../database/models/economy');
+const store = require('../../database/models/economyStore');
 
-const Schema = require("../../database/models/economy");
-const store = require("../../database/models/economyStore");
-const items = require("../../database/models/economyItems");
-module.exports = async (client, interaction, args) => {
+module.exports = async (client, interaction) => {
     const storeData = await store.find({ Guild: interaction.guild.id });
-    if (storeData.length == 0) return client.errNormal({
-        error: `No shop found in this server`,
-        type: 'editreply'
-    }, interaction);
+    if (!storeData.length) {
+        return client.errNormal({
+            error: `No shop found in this server`,
+            type: 'editreply'
+        }, interaction);
+    }
 
-    let labels = [];
+    let labels = storeData
+        .map(d => {
+            const role = interaction.guild.roles.cache.get(d.Role);
+            if (!role) return null;
+            return {
+                label: `${role.name.slice(0, 24)}`,
+                value: role.id,
+            };
+        })
+        .filter(Boolean);
 
-    storeData.forEach(d => {
-        const role = interaction.guild.roles.cache.get(d.Role);
-
-        const generated = {
-            label: `${role.name.substr(0, 24)}.`,
-            value: role.id,
-        }
-
-        return labels.push(generated);
-    });
-    labels.push({
-        label: `Fishingrod`,
-        value: `fishingrod`,
-    })
+    labels.push({ label: `Fishingrod`, value: `fishingrod` });
 
     const select = await client.generateSelect(`economyBuy`, labels);
 
-    client.embed({
+    await client.embed({
         title: `🛒・${interaction.guild.name}'s Store`,
-        desc: `Choose a item from the menu to buy`,
+        desc: `Choose an item from the menu to buy`,
         components: [select],
         type: 'editreply'
-    }, interaction)
+    }, interaction);
 
-    const filter = i => {
-        return i.user.id === interaction.user.id;
-    };
+    const filter = i => i.user.id === interaction.user.id;
 
-    interaction.channel.awaitMessageComponent({ filter, componentType: Discord.ComponentType.StringSelect, time: 60000 }).then(async i => {
-        const role = i.values[0];
-        const buyPerson = i.guild.members.cache.get(i.user.id);
+    try {
+        const i = await interaction.channel.awaitMessageComponent({
+            filter,
+            componentType: Discord.ComponentType.StringSelect,
+            time: 60000
+        });
 
-        const data = await Schema.findOne({ Guild: i.guild.id, User: i.user.id });
-        if(i.values[0] == 'fishingrod') {
-            console.log(data)
-            if (parseInt(100) > parseInt(data.Money)) return client.errNormal({
+        const buyer = i.guild.members.cache.get(i.user.id);
+        const wallet = await Schema.findOne({ Guild: i.guild.id, User: i.user.id });
+        const money = Number(wallet?.Money || 0);
+
+        if (i.values[0] === 'fishingrod') {
+            const cost = 100;
+            if (money < cost) {
+                return client.errNormal({
+                    error: `You don't have enough money to buy this!`,
+                    type: 'update',
+                    components: []
+                }, i);
+            }
+
+            const removed = await client.removeMoney(i, i.user, cost);
+            if (!removed) {
+                return client.errNormal({
+                    error: `Your wallet could not be updated. Try again.`,
+                    type: 'update',
+                    components: []
+                }, i);
+            }
+
+            await client.buyItem(i, i.user, 'FishingRod');
+            return client.succNormal({
+                text: `Purchase completed successfully`,
+                fields: [{ name: `📘┆Item`, value: `Fishingrod` }],
+                type: 'update',
+                components: []
+            }, i);
+        }
+
+        const checkStore = await store.findOne({ Guild: i.guild.id, Role: i.values[0] });
+        if (!checkStore) {
+            return client.errNormal({
+                error: `That store item no longer exists.`,
+                type: 'update',
+                components: []
+            }, i);
+        }
+
+        const itemCost = Number(checkStore.Amount || 0);
+        if (money < itemCost) {
+            return client.errNormal({
                 error: `You don't have enough money to buy this!`,
                 type: 'update',
                 components: []
             }, i);
+        }
 
-            client.removeMoney(i, i.user, parseInt(100));
-            items.findOne({ Guild: i.guild.id, User: i.user.id }, async (err, data) => {
-                if (data) {
-                    data.FishingRod = true;
-                    data.save();
-                } else {
-                    new items({
-                        Guild: i.guild.id,
-                        User: i.user.id,
-                        FishingRod: true,
-                    }).save();
-                }
-            })
-            return client.succNormal({
-                text: `The purchase has been successfully completed`,
-                fields: [
-                    {
-                        name: `📘┆Item`,
-                        value: `Fishingrod`
-                    }
-                ],
-                type: 'update',
-                components: []
-            }, i);
-
-        } 
-        const checkStore = await store.findOne({ Guild: i.guild.id, Role: role });
-
-        if (parseInt(checkStore.Amount) > parseInt(data.Money)) return client.errNormal({
-            error: `You don't have enough money to buy this!`,
-            type: 'update',
-            components: []
-        }, i);
-
-        client.removeMoney(i, i.user, parseInt(checkStore.Amount));
-        try {
-            await buyPerson.roles.add(role);
-        } catch (e) {
+        const removed = await client.removeMoney(i, i.user, itemCost);
+        if (!removed) {
             return client.errNormal({
-                error: `I can't add <@&${role}> to you!`,
+                error: `Your wallet could not be updated. Try again.`,
                 type: 'update',
                 components: []
             }, i);
         }
 
-        client.succNormal({
-            text: `The purchase has been successfully completed`,
-            fields: [
-                {
-                    name: `📘┆Item`,
-                    value: `<@&${role}>`
-                }
-            ],
+        try {
+            await buyer.roles.add(i.values[0]);
+        } catch (_) {
+            await client.addMoney(i, i.user, itemCost); // rollback funds when role grant fails
+            return client.errNormal({
+                error: `I can't add <@&${i.values[0]}> to you!`,
+                type: 'update',
+                components: []
+            }, i);
+        }
+
+        return client.succNormal({
+            text: `Purchase completed successfully`,
+            fields: [{ name: `📘┆Item`, value: `<@&${i.values[0]}>` }],
             type: 'update',
             components: []
         }, i);
-    })
-}
-
+    } catch (_) {
+        return;
+    }
+};

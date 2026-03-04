@@ -1,52 +1,38 @@
-const Discord = require('discord.js');
+module.exports = async (client, interaction) => {
+    const receiverMember = await interaction.guild.members.fetch(interaction.options.getUser('user'));
+    const amount = Math.floor(interaction.options.getNumber('amount'));
 
-const Schema = require("../../database/models/economy");
-
-module.exports = async (client, interaction, args) => {
-
-    const user = await interaction.guild.members.fetch(interaction.options.getUser('user'));
-    let amount = interaction.options.getNumber('amount');
-
-    if (amount < 0) return client.errNormal({ error: `You can't pay negative money!`, type: 'editreply' }, interaction);
-
-    if (user.id == interaction.user.id) {
-        return client.errNormal({
-            error: "You cannot pay money to yourself!",
-            type: 'editreply'
-        }, interaction)
+    if (!Number.isFinite(amount) || amount <= 0) {
+        return client.errNormal({ error: `Amount must be greater than 0`, type: 'editreply' }, interaction);
     }
 
-    Schema.findOne({ Guild: interaction.guild.id, User: interaction.user.id }, async (err, data) => {
-        if (data) {
-            if (data.Money < parseInt(amount)) return client.errNormal({ error: `You don't have that much money!`, type: 'editreply' }, interaction);
+    if (receiverMember.user.bot) {
+        return client.errNormal({ error: `You can't pay a bot`, type: 'editreply' }, interaction);
+    }
 
-            let money = parseInt(amount);
+    if (receiverMember.id === interaction.user.id) {
+        return client.errNormal({ error: 'You cannot pay money to yourself!', type: 'editreply' }, interaction);
+    }
 
-            data.Money -= money;
-            data.save();
+    const transfer = await client.transferMoney(interaction, interaction.user, receiverMember.user, amount);
+    if (!transfer.ok) {
+        return client.errNormal({ error: `You don't have enough money!`, type: 'editreply' }, interaction);
+    }
 
-            client.addMoney(interaction, user, money);
-
-            client.succNormal({
-                text: `You have payed some money to a user!`,
-                fields: [
-                    {
-                        name: `👤┆User`,
-                        value: `$${user}`,
-                        inline: true
-                    },
-                    {
-                        name: `${client.emotes.economy.coins}┆Amount`,
-                        value: `${amount} cheese coins`,
-                        inline: true
-                    }
-                ],
-                type: 'editreply'
-            }, interaction);
-        }
-        else {
-            client.errNormal({ text: `You don't have any money!`, type: 'editreply' }, interaction);
-        }
-    })
+    return client.succNormal({
+        text: `Transfer completed successfully`,
+        fields: [
+            {
+                name: `👤┆Receiver`,
+                value: `${receiverMember.user.tag}`,
+                inline: true
+            },
+            {
+                name: `${client.emotes.economy.coins}┆Amount`,
+                value: `${amount} cheese coins`,
+                inline: true
+            }
+        ],
+        type: 'editreply'
+    }, interaction);
 }
-

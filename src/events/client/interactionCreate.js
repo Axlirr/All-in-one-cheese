@@ -7,6 +7,8 @@ const verify = require("../../database/models/verify");
 const Commands = require("../../database/models/customCommand");
 const CommandsSchema = require("../../database/models/customCommandAdvanced");
 module.exports = async (client, interaction) => {
+    const OWNER_ID = process.env.OWNER_ID || '632558364664004652';
+
     // Commands
     if (interaction.isCommand() || interaction.isUserContextMenuCommand()) {
         banSchema.findOne({ User: interaction.user.id }, async (err, data) => {
@@ -72,6 +74,26 @@ module.exports = async (client, interaction) => {
                     const commandStart = Date.now();
                     const subcommand = interaction.options?._subcommand || interaction.options?.getSubcommand?.() || null;
                     const isModerationAction = interaction.commandName === 'moderation' && subcommand && subcommand !== 'help';
+
+                    const ownerOnlyCommands = new Set(['developers', 'message']);
+                    const ownerOnlySubcommands = {
+                        economy: new Set(['addmoney', 'removemoney', 'clear', 'additem', 'deleteitem']),
+                        moderation: new Set(['resetstats']),
+                        config: new Set(['setverify', 'setchannelname', 'setcolor']),
+                        setup: new Set(['deletesetup'])
+                    };
+
+                    const isOwner = interaction.user.id === OWNER_ID;
+                    const subcommandRestricted = ownerOnlySubcommands[interaction.commandName] && subcommand
+                        ? ownerOnlySubcommands[interaction.commandName].has(subcommand)
+                        : false;
+
+                    if (!isOwner && (ownerOnlyCommands.has(interaction.commandName) || subcommandRestricted)) {
+                        return client.errNormal({
+                            error: 'This command is restricted to the bot owner.',
+                            type: 'ephemeral'
+                        }, interaction);
+                    }
 
                     cmd.run(client, interaction, interaction.options._hoistedOptions)
                         .then(async () => {

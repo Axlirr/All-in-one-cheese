@@ -60,12 +60,40 @@ npm start
 - `src/handlers` → loaders/utilities/core helpers
 - `src/database/models` → MongoDB models
 
+## Economy Stability Improvements
+
+- Reworked core economy helpers to use safer update patterns
+- Added transfer helper with explicit insufficient-funds handling
+- Hardened `/economy daily`, `/economy pay`, `/economy buy`, and `/economy balance`
+- Added purchase rollback logic when role assignment fails
+
+## Owner-Only Sensitive Commands
+
+Sensitive commands are restricted to the owner ID:
+
+- `632558364664004652`
+
+Configured via:
+
+- `OWNER_ID` in `.env`
+
+Current restrictions include high-risk command areas like developer controls and selected economy/config/admin subcommands.
+
+## Command Health Checks
+
+Run this to detect missing command handlers before deploying:
+
+```bash
+npm run health:commands
+```
+
 ## Cleanup & Hardening Included
 
 - Removed obsolete Replit artifacts and Windows desktop metadata
 - Removed unnecessary package dependencies (`fs`, `util`, `i`)
 - Removed duplicate keepalive HTTP server in shard process
 - Improved moderation safety check in kick flow
+- Added safer subcommand loader with graceful fallback errors
 
 ## License
 

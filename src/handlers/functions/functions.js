@@ -77,24 +77,47 @@ module.exports = async (client) => {
     }
 
     client.loadSubcommands = async function (client, interaction, args) {
+        const fs = require('fs');
+        const path = require('path');
+
+        const commandName = interaction.commandName;
+        const subcommand = interaction.options.getSubcommand();
+
+        const commandFolder = commandName;
+        const baseDir = path.join(process.cwd(), 'src', 'commands', commandFolder);
+
+        let isBeta = false;
         try {
             const data = await Functions.findOne({ Guild: interaction.guild.id });
-
-            if (data.Beta == true) {
-                return require(`${process.cwd()}/src/commands/${interaction.commandName}/${interaction.options.getSubcommand()}-beta`)(client, interaction, args).catch(err => {
-                    client.emit("errorCreate", err, interaction.commandName, interaction)
-                })
-            }
-            else {
-                return require(`${process.cwd()}/src/commands/${interaction.commandName}/${interaction.options.getSubcommand()}`)(client, interaction, args).catch(err => {
-                    client.emit("errorCreate", err, interaction.commandName, interaction)
-                })
-            }
+            isBeta = Boolean(data && data.Beta === true);
+        } catch (_) {
+            isBeta = false;
         }
-        catch {
-            return require(`${process.cwd()}/src/commands/${interaction.commandName}/${interaction.options.getSubcommand()}`)(client, interaction, args).catch(err => {
-                client.emit("errorCreate", err, interaction.commandName, interaction)
-            })
+
+        const candidates = [
+            path.join(baseDir, `${subcommand}${isBeta ? '-beta' : ''}.js`),
+            path.join(baseDir, `${subcommand}.js`),
+        ];
+
+        const commandPath = candidates.find((p) => fs.existsSync(p));
+
+        if (!commandPath) {
+            return client.errNormal({
+                error: `This subcommand is not available yet: /${commandName} ${subcommand}`,
+                type: 'editreply'
+            }, interaction);
+        }
+
+        try {
+            return require(commandPath)(client, interaction, args).catch(err => {
+                client.emit('errorCreate', err, `${commandName}:${subcommand}`, interaction)
+            });
+        } catch (err) {
+            client.emit('errorCreate', err, `${commandName}:${subcommand}`, interaction);
+            return client.errNormal({
+                error: 'An error occurred while loading this command.',
+                type: 'editreply'
+            }, interaction);
         }
     }
 

@@ -1,53 +1,70 @@
-const Discord = require('discord.js');
-
-const Schema = require("../../database/models/economy");
-const itemSchema = require("../../database/models/economyItems");
+const Schema = require('../../database/models/economy');
+const itemSchema = require('../../database/models/economyItems');
 
 module.exports = async (client) => {
+    client.getEconomyProfile = async function (interaction, userId) {
+        let profile = await Schema.findOne({ Guild: interaction.guild.id, User: userId });
+        if (!profile) {
+            profile = await Schema.create({
+                Guild: interaction.guild.id,
+                User: userId,
+                Money: 0,
+                Bank: 0,
+            });
+        }
+        return profile;
+    }
+
     client.addMoney = async function (interaction, user, amount) {
-        Schema.findOne({ Guild: interaction.guild.id, User: user.id }, async (err, data) => {
-            if (data) {
-                data.Money += amount;
-                data.save();
-            }
-            else {
-                new Schema({
-                    Guild: interaction.guild.id,
-                    User: user.id,
-                    Money: amount,
-                    Bank: 0
-                }).save();
-            }
-        })
+        const safeAmount = Math.max(0, Number(amount) || 0);
+        if (!safeAmount) return false;
+
+        await Schema.updateOne(
+            { Guild: interaction.guild.id, User: user.id },
+            {
+                $setOnInsert: { Guild: interaction.guild.id, User: user.id, Bank: 0 },
+                $inc: { Money: safeAmount }
+            },
+            { upsert: true }
+        );
+
+        return true;
     }
 
     client.removeMoney = async function (interaction, user, amount) {
-        Schema.findOne({ Guild: interaction.guild.id, User: user.id }, async (err, data) => {
-            if (data) {
-                data.Money -= amount;
-                data.save();
-            }
-            else {
-                client.errNormal(`User has no ${client.emotes.economy.coins}!`, interaction.channel);
-            }
-        })
+        const safeAmount = Math.max(0, Number(amount) || 0);
+        if (!safeAmount) return false;
+
+        const updated = await Schema.findOneAndUpdate(
+            { Guild: interaction.guild.id, User: user.id, Money: { $gte: safeAmount } },
+            { $inc: { Money: -safeAmount } },
+            { new: true }
+        );
+
+        return Boolean(updated);
+    }
+
+    client.transferMoney = async function (interaction, fromUser, toUser, amount) {
+        const safeAmount = Math.max(0, Number(amount) || 0);
+        if (!safeAmount) return { ok: false, reason: 'invalid_amount' };
+
+        const removed = await client.removeMoney(interaction, fromUser, safeAmount);
+        if (!removed) return { ok: false, reason: 'insufficient_funds' };
+
+        await client.addMoney(interaction, toUser, safeAmount);
+        return { ok: true };
     }
 
     client.buyItem = async function (interaction, user, item) {
-        const data = await itemSchema.findOne({ Guild: interaction.guild.id, User: user.id });
-
-        if (item == "FishingRod") {
-            if (data) {
-                data.FishingRod = true;
-                data.save();
-            }
-            else {
-                new itemSchema({
-                    Guild: interaction.guild.id,
-                    User: user.id,
-                    FishingRod: true,
-                }).save();
-            }
+        if (item === 'FishingRod') {
+            await itemSchema.updateOne(
+                { Guild: interaction.guild.id, User: user.id },
+                {
+                    $setOnInsert: { Guild: interaction.guild.id, User: user.id },
+                    $set: { FishingRod: true }
+                },
+                { upsert: true }
+            );
         }
     }
 }
