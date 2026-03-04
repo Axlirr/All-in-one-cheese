@@ -7,6 +7,7 @@ A production-ready Discord bot focused on **moderation, utility, engagement, and
 - ✅ Slash-command architecture (Discord.js v14)
 - ✅ Moderation suite (ban/kick/warn/timeout/lockdown/etc.)
 - ✅ Ticketing, giveaways, invites, leveling, economy, music, automod
+- ✅ WorldMonitor-style automated news posting to configurable channels
 - ✅ MongoDB persistence for server configurations and user state
 - ✅ Sharded runtime support
 - ✅ Webhook-based operational logging
@@ -29,6 +30,24 @@ This release includes a built-in performance layer for moderation teams.
 - `/moderation leaderboard` → top moderators by composite performance score
 - `/moderation rate <moderator> <score> [note]` → manager/admin ratings (1–5)
 - `/moderation resetstats [moderator]` → reset one moderator or all stats (admin)
+
+## New: Automated News Channels (WorldMonitor-inspired)
+
+You can now configure automatic news posting with source variants adapted from WorldMonitor feed strategy.
+
+### Config commands
+
+- `/config setnewschannel channel:<#channel> variant:<world|tech|finance|happy> interval:<5-120>`
+- `/config newsstatus`
+- `/config disablenews`
+- `/config postnewsnow` (manual test trigger)
+
+### How it works
+
+- Polls curated RSS sources by selected variant
+- Posts only unseen links to avoid duplicates
+- Maintains per-guild state (channel, variant, interval, seen links)
+- Runs in a resilient background cycle without blocking bot startup
 
 ## Setup
 

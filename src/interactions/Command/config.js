@@ -71,6 +71,34 @@ module.exports = {
                 )
                 .addStringOption(option => option.setName("message").setDescription("Enter a message for the ticket").setRequired(true))
         )
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('setnewschannel')
+                .setDescription('Set channel and source variant for automated world news posting')
+                .addChannelOption(option => option.setName('channel').setDescription('Text channel for automated news').setRequired(true).addChannelTypes(ChannelType.GuildText))
+                .addStringOption(option => option.setName('variant').setDescription('News source style').setRequired(true).addChoices(
+                    { name: 'world', value: 'world' },
+                    { name: 'tech', value: 'tech' },
+                    { name: 'finance', value: 'finance' },
+                    { name: 'happy', value: 'happy' }
+                ))
+                .addNumberOption(option => option.setName('interval').setDescription('Fetch interval in minutes (5-120)').setRequired(false))
+        )
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('newsstatus')
+                .setDescription('Show current automated news posting settings')
+        )
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('disablenews')
+                .setDescription('Disable automated world news posting for this server')
+        )
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('postnewsnow')
+                .setDescription('Fetch and post news instantly for testing')
+        )
     ,
 
     /** 

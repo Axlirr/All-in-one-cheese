@@ -56,4 +56,8 @@ module.exports = async (client) => {
             })
     }, 50000)
 
+    // WorldMonitor-based automated news posting
+    setTimeout(() => client.runWorldNewsCycle().catch(() => null), 8000);
+    setInterval(() => client.runWorldNewsCycle().catch(() => null), 60 * 1000);
+
 }
