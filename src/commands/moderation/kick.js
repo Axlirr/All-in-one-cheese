@@ -11,7 +11,7 @@ module.exports = async (client, interaction, args) => {
   const member = await interaction.guild.members.fetch(interaction.options.getUser('user').id);
   const reason = interaction.options.getString('reason') || 'Not given';
 
-  if (member.permissions.has(Discord.PermissionsBitField.Flags.KickMembers) || member.permissions.has(Discord.PermissionsBitField.Flags.KickMembers)) return client.errNormal({
+  if (member.permissions.has(Discord.PermissionsBitField.Flags.KickMembers) || member.permissions.has(Discord.PermissionsBitField.Flags.Administrator)) return client.errNormal({
     error: "You can't kick a moderator",
     type: 'editreply'
   }, interaction);

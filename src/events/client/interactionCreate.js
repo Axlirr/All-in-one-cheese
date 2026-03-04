@@ -68,9 +68,36 @@ module.exports = async (client, interaction) => {
                     }, interaction)
                 }
 
-                if(cmd) cmd.run(client, interaction, interaction.options._hoistedOptions).catch(err => {
-                    client.emit("errorCreate", err, interaction.commandName, interaction)
-                })
+                if (cmd) {
+                    const commandStart = Date.now();
+                    const subcommand = interaction.options?._subcommand || interaction.options?.getSubcommand?.() || null;
+                    const isModerationAction = interaction.commandName === 'moderation' && subcommand && subcommand !== 'help';
+
+                    cmd.run(client, interaction, interaction.options._hoistedOptions)
+                        .then(async () => {
+                            if (isModerationAction) {
+                                await client.trackModeratorAction({
+                                    guildId: interaction.guild.id,
+                                    moderatorId: interaction.user.id,
+                                    actionType: subcommand,
+                                    responseMs: Date.now() - commandStart,
+                                    success: true,
+                                });
+                            }
+                        })
+                        .catch(async err => {
+                            if (isModerationAction) {
+                                await client.trackModeratorAction({
+                                    guildId: interaction.guild.id,
+                                    moderatorId: interaction.user.id,
+                                    actionType: subcommand,
+                                    responseMs: Date.now() - commandStart,
+                                    success: false,
+                                });
+                            }
+                            client.emit("errorCreate", err, interaction.commandName, interaction)
+                        })
+                }
             }
         })
     }

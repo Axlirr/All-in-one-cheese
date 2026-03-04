@@ -1,33 +1,72 @@
-# Discord-Bot
-## 🤖 Discord bot with over 500+ commands.
+# All-in-one Cheese Bot
 
-![image](https://images-ext-2.discordapp.net/external/g3g819pEvW-xa-WU2rqgFRFkhuPflF4_mxoK63VPZ0A/https/storage.googleapis.com/replit/images/1671693930209_5b7ac25cf82388ebc5dc9793fa0bbc97.png)
+A production-ready Discord bot focused on **moderation, utility, engagement, and server operations**.
 
+## Highlights
 
-# [ALL IN ONΞ™](https://tinyurl.com/3jvb65tv)
-## [YouTube](https://tinyurl.com/3jvb65tv )
-### [Support Server](https://discord.gg/uoaio)
+- ✅ Slash-command architecture (Discord.js v14)
+- ✅ Moderation suite (ban/kick/warn/timeout/lockdown/etc.)
+- ✅ Ticketing, giveaways, invites, leveling, economy, music, automod
+- ✅ MongoDB persistence for server configurations and user state
+- ✅ Sharded runtime support
+- ✅ Webhook-based operational logging
 
-# How to setup the bot?
-- Watch YouTube Video: [Click Here](https://youtu.be/CQP6M9AbO_E)
----
+## New: Moderator Performance System
 
-### 💘 Emotes Servers 
+This release includes a built-in performance layer for moderation teams.
 
-* 1.0: https://discord.gg/RjHTDAQHkR
-* 2.0: https://discord.gg/CAYR2SN76Z
-* 2.1.0: https://discord.gg/fmhTFzruzP
-* 3.0: https://discord.gg/hpwuhE2vVE
-* 3.1.0: https://discord.gg/M7DWTrYEWZ
+### What it tracks automatically
 
-### 💕Credit
-- Code By Arbaz
-- Modified By Arbaz
+- moderation command activity per moderator
+- command success/failure counts
+- average command response time
+- action-type breakdown (ban/kick/warn/etc.)
+- last active moderation timestamp
 
-## ✨ Discord Profile
-<div align="center">
-  <a width="100%" href="https://dsc.gg/uoaio"  target="_blank">
-    <img align="mid" height="100%" width="100%" style="margin: 0 10px 0 0;" alt=" " src="https://discord.c99.nl/widget/theme-3/922120042651451423.png">
-    <img align="mid" height="100%" width="100%" style="margin: 0 10px 0 0;" alt=" " src="https://discord.c99.nl/widget/theme-2/755297485328482356.png">  
-  </a>
-</div>
+### New moderation subcommands
+
+- `/moderation performance [moderator]` → detailed moderator metrics
+- `/moderation leaderboard` → top moderators by composite performance score
+- `/moderation rate <moderator> <score> [note]` → manager/admin ratings (1–5)
+- `/moderation resetstats [moderator]` → reset one moderator or all stats (admin)
+
+## Setup
+
+### 1) Install dependencies
+
+```bash
+npm install
+```
+
+### 2) Configure environment
+
+Copy `.env.example` to `.env` and set required values:
+
+- `DISCORD_TOKEN`
+- `MONGO_URI`
+- optional webhook and external API tokens
+
+### 3) Start the bot
+
+```bash
+npm start
+```
+
+## Project Structure
+
+- `src/interactions` → slash/context menu command definitions
+- `src/commands` → subcommand implementations
+- `src/events` → Discord event handlers
+- `src/handlers` → loaders/utilities/core helpers
+- `src/database/models` → MongoDB models
+
+## Cleanup & Hardening Included
+
+- Removed obsolete Replit artifacts and Windows desktop metadata
+- Removed unnecessary package dependencies (`fs`, `util`, `i`)
+- Removed duplicate keepalive HTTP server in shard process
+- Improved moderation safety check in kick flow
+
+## License
+
+MIT

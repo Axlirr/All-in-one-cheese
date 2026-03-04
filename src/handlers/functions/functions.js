@@ -3,6 +3,7 @@ const fetch = require("node-fetch");
 
 const Functions = require("../../database/models/functions");
 const VoiceSchema = require("../../database/models/voiceChannels");
+const ModeratorPerformance = require("../../database/models/moderatorPerformance");
 
 module.exports = async (client) => {
     //----------------------------------------------------------------//
@@ -193,6 +194,55 @@ module.exports = async (client) => {
                 msg.edit({ embeds: [await client.generateEmbed(currentIndex, currentIndex, lb, title, interaction)], components: [rowDisable] });
             })
         })
+    }
+
+    client.trackModeratorAction = async function ({ guildId, moderatorId, actionType, responseMs = 0, success = true }) {
+        if (!guildId || !moderatorId || !actionType) return;
+
+        const doc = await ModeratorPerformance.findOne({ Guild: guildId, Moderator: moderatorId }) || new ModeratorPerformance({
+            Guild: guildId,
+            Moderator: moderatorId,
+            ActionsByType: {}
+        });
+
+        doc.TotalActions += 1;
+        if (success) doc.SuccessfulActions += 1;
+        else doc.FailedActions += 1;
+
+        const safeResponse = Math.max(0, Number(responseMs) || 0);
+        doc.TotalResponseMs += safeResponse;
+        doc.AvgResponseMs = Math.round(doc.TotalResponseMs / Math.max(doc.TotalActions, 1));
+        doc.LastActionAt = Date.now();
+
+        if (!doc.ActionsByType) doc.ActionsByType = {};
+        doc.ActionsByType[actionType] = (doc.ActionsByType[actionType] || 0) + 1;
+
+        await doc.save();
+    }
+
+    client.rateModerator = async function ({ guildId, moderatorId, byUserId, score, note = '' }) {
+        if (!guildId || !moderatorId || !byUserId) return null;
+
+        const doc = await ModeratorPerformance.findOne({ Guild: guildId, Moderator: moderatorId }) || new ModeratorPerformance({
+            Guild: guildId,
+            Moderator: moderatorId,
+            ActionsByType: {}
+        });
+
+        const safeScore = Math.max(1, Math.min(5, Number(score) || 1));
+        doc.Ratings.push({
+            By: byUserId,
+            Score: safeScore,
+            Note: String(note || '').slice(0, 300),
+            Date: Date.now(),
+        });
+
+        doc.RatingCount += 1;
+        doc.RatingTotal += safeScore;
+        doc.RatingAvg = Number((doc.RatingTotal / Math.max(doc.RatingCount, 1)).toFixed(2));
+
+        await doc.save();
+        return doc;
     }
 
     client.generateActivity = function (id, name, channel, interaction) {

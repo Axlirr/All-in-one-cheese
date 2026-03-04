@@ -44,13 +44,6 @@ const client = new Discord.Client({
     ],
     restTimeOffset: 0
 });
-const http = require("http");
-http.createServer((_, res) => res.end("UpTime")).listen(8080)
-
-
-const clientID = process.env.SPOTIFY_CLIENT_ID;
-const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
-
 const player = new Player(client);
 client.player = player;
 

@@ -120,6 +120,31 @@ module.exports = {
                 .setDescription('See a users warnings')
                 .addUserOption(option => option.setName('user').setDescription('Select a user').setRequired(true))
         )
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('performance')
+                .setDescription('View moderator performance metrics')
+                .addUserOption(option => option.setName('moderator').setDescription('Moderator to inspect'))
+        )
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('leaderboard')
+                .setDescription('Top moderators by performance score')
+        )
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('rate')
+                .setDescription('Rate a moderator (1-5)')
+                .addUserOption(option => option.setName('moderator').setDescription('Moderator to rate').setRequired(true))
+                .addNumberOption(option => option.setName('score').setDescription('Score from 1 to 5').setRequired(true))
+                .addStringOption(option => option.setName('note').setDescription('Optional feedback note'))
+        )
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('resetstats')
+                .setDescription('Reset moderator performance stats')
+                .addUserOption(option => option.setName('moderator').setDescription('Reset this moderator only'))
+        )
     ,
 
     /** 
