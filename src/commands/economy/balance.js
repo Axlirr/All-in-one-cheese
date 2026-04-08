@@ -12,15 +12,8 @@ module.exports = async (client, interaction) => {
 
     const data = await Schema.findOne({ Guild: interaction.guild.id, User: user.id });
 
-    if (!data) {
-        return client.errNormal({
-            error: `This user hasn't collected any cheese coins yet!`,
-            type: 'editreply'
-        }, interaction);
-    }
-
-    const money = Math.max(0, Number(data.Money) || 0);
-    const bank = Math.max(0, Number(data.Bank) || 0);
+    const money = Math.max(0, Number(data?.Money) || 0);
+    const bank = Math.max(0, Number(data?.Bank) || 0);
     const total = money + bank;
 
     return client.embed({

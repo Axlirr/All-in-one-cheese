@@ -7,4 +7,6 @@ const Schema = new mongoose.Schema({
     FishingRodUsage: { type: Number, default: 0 },
 });
 
+Schema.index({ Guild: 1, User: 1 });
+
 module.exports = mongoose.model("economyItems", Schema);

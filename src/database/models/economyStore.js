@@ -6,4 +6,6 @@ const Schema = new mongoose.Schema({
     Amount: Number
 });
 
+Schema.index({ Guild: 1 });
+
 module.exports = mongoose.model("economyStore", Schema);

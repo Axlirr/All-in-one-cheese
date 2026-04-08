@@ -1,50 +1,40 @@
-const Discord = require('discord.js');
-
 const Schema = require("../../database/models/economy");
 const Schema2 = require("../../database/models/economyTimeout");
 
 module.exports = async (client, interaction, args) => {
-  let user = interaction.user;
-  let timeout = 31557600000;
-  let amount = 5000;
+    const user = interaction.user;
+    const timeout = 31557600000;
+    const amount = 5000;
 
-  Schema2.findOne({ Guild: interaction.guild.id, User: user.id }, async (err, dataTime) => {
-    if (dataTime && dataTime.Yearly !== null && timeout - (Date.now() - dataTime.Yearly) > 0) {
-      let time = (dataTime.Yearly / 1000 + timeout / 1000).toFixed(0);
-      return client.errWait({
-        time: time,
-        type: 'editreply'
-      }, interaction);
+    const dataTime = await Schema2.findOne({ Guild: interaction.guild.id, User: user.id });
+    const lastYearly = Number(dataTime?.Yearly || 0);
+
+    if (lastYearly && timeout - (Date.now() - lastYearly) > 0) {
+        const time = (lastYearly / 1000 + timeout / 1000).toFixed(0);
+        return client.errWait({ time: time, type: 'editreply' }, interaction);
     }
-    else {
 
-
-      client.succNormal({
+    client.succNormal({
         text: `You've collected your yearly reward!`,
         fields: [
-          {
-            name: `${client.emotes.economy.coins}┆Earned`,
-            value: `${amount} cheese coins`,
-            inline: true
-          }
+            {
+                name: `${client.emotes.economy.coins}┆Earned`,
+                value: `${amount} cheese coins`,
+                inline: true
+            }
         ],
         type: 'editreply'
-      }, interaction);
+    }, interaction);
 
-      if (dataTime) {
-        dataTime.Yearly = Date.now();
-        dataTime.save();
-      }
-      else {
-        new Schema2({
-          Guild: interaction.guild.id,
-          User: user.id,
-          Yearly: Date.now()
-        }).save();
-      }
+    await Schema2.updateOne(
+        { Guild: interaction.guild.id, User: user.id },
+        {
+            $setOnInsert: { Guild: interaction.guild.id, User: user.id },
+            $set: { Yearly: Date.now() }
+        },
+        { upsert: true }
+    );
 
-      client.addMoney(interaction, user, amount);
-    }
-  })
+    await client.addMoney(interaction, user, amount);
 }
 
