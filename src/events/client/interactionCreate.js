@@ -60,7 +60,7 @@ module.exports = async (client, interaction) => {
                         }
                     }
                 }
-                if (interaction.options._subcommand !== null && interaction.options.getSubcommand() == "help") {
+                if (interaction.options.getSubcommand(false) === "help") {
                     const commands = interaction.client.commands.filter(x => x.data.name == interaction.commandName).map((x) => x.data.options.map((c) => '`' + c.name + '` - ' + c.description).join("\n"));
 
                     return client.embed({
@@ -72,7 +72,7 @@ module.exports = async (client, interaction) => {
 
                 if (cmd) {
                     const commandStart = Date.now();
-                    const subcommand = interaction.options?._subcommand || interaction.options?.getSubcommand?.() || null;
+                    const subcommand = interaction.options?.getSubcommand(false) ?? null;
                     const isModerationAction = interaction.commandName === 'moderation' && subcommand && subcommand !== 'help';
 
                     const ownerOnlyCommands = new Set(['developers', 'message', 'addmoney', 'removemoney', 'clear', 'additem', 'deleteitem']);
@@ -133,7 +133,7 @@ module.exports = async (client, interaction) => {
             try {
                 var image = new Discord.AttachmentBuilder(captcha.JPEGStream, {name:"captcha.jpeg"});
 
-                interaction.reply({ files: [image], fetchReply: true }).then(function (msg) {
+                interaction.reply({ files: [image] }).then(function (msg) {
                     const filter = s => s.author.id == interaction.user.id;
 
                     interaction.channel.awaitMessages({ filter, max: 1 }).then(response => {

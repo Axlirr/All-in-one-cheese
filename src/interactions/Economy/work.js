@@ -6,7 +6,7 @@ module.exports = {
         .setDescription('Go to work and earn cheese coins'),
 
     run: async (client, interaction, args) => {
-        await interaction.deferReply({ fetchReply: true });
+        await interaction.deferReply();
         return require(`${process.cwd()}/src/commands/economy/work`)(client, interaction, args);
     },
 };
