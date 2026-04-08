@@ -62,7 +62,7 @@ npm install
 Copy `.env.example` to `.env` and set required values:
 
 - `DISCORD_TOKEN`
-- `MONGO_URI`
+- `MONGO_TOKEN`
 - optional webhook and external API tokens
 
 ### 3) Start the bot
