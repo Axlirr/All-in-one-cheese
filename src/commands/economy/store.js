@@ -10,7 +10,7 @@ module.exports = async (client, interaction, args, message) => {
             await client.createLeaderboard(`🛒・${interaction.guild.name}'s Store`, lb, interaction);
             client.embed({
                 title: `🛒・Bot's Store`,
-                desc: `**Catnip** - ${client.emotes.economy.coins} 100 Cheese Coins \n**To buy:** \`buy catnip\`\n\n**Yarn Ball** - ${client.emotes.economy.coins} 250 Cheese Coins \n**To buy:** \`buy yarnball\`\n\n**Scratching Post** - ${client.emotes.economy.coins} 500 Cheese Coins \n**To buy:** \`buy scratchingpost\``,
+                desc: `**Fishing Rod** - ${client.emotes.economy.coins} 100 Cheese Coins \n**To buy:** \`buy fishingrod\`\n\n**Aged Gouda** - ${client.emotes.economy.coins} 250 Cheese Coins \n**To buy:** \`buy agedgouda\`\n\n**Fine Brie** - ${client.emotes.economy.coins} 500 Cheese Coins \n**To buy:** \`buy finebrie\``,
             }, interaction.channel);
         }
         else {

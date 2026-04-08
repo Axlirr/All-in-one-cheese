@@ -31,17 +31,16 @@
     },
 
     "economy": {
-        "pocket": "🐱",
-        "bank": "🧀",
+        "pocket": "💰",
+        "bank": "🏦",
         "coins": "🧀",
         "cheese": "🧀",
-        "cat": "🐱",
-        "paw": "🐾",
-        "yarn": "🧶",
-        "mouse": "🐭",
-        "fish": "🐟",
+        "rod": "🎣",
+        "shovel": "⛏️",
+        "bag": "🎒",
+        "trade": "🤝",
         "nap": "😴",
-        "pounce": "🐈"
+        "rob": "🦹"
     },
 
     "music": {

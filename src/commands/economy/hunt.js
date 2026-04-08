@@ -15,18 +15,18 @@ module.exports = async (client, interaction, args) => {
 
     let timeout = 60000;
     let hunt = [
-        { name: 'Sneaky Mouse', emoji: '🐭', value: 15 },
-        { name: 'Yarn Ball', emoji: '🧶', value: 10 },
-        { name: 'Red Laser Dot', emoji: '🔴', value: 25 },
-        { name: 'Feather Toy', emoji: '🪶', value: 12 },
-        { name: 'Catnip Stash', emoji: '🌿', value: 30 },
+        { name: 'Wild Boar', emoji: '🐗', value: 15 },
+        { name: 'Rabbit', emoji: '🐇', value: 10 },
+        { name: 'Deer', emoji: '🦌', value: 25 },
+        { name: 'Fox', emoji: '🦊', value: 12 },
+        { name: 'Rare Mushroom', emoji: '🍄', value: 30 },
         { name: 'Cheese Wheel', emoji: '🧀', value: 50 },
-        { name: 'Golden Mouse', emoji: '✨🐭', value: 100 },
-        { name: 'Cardboard Box', emoji: '📦', value: 20 },
-        { name: 'Fuzzy Bug', emoji: '🐛', value: 8 },
+        { name: 'Golden Stag', emoji: '✨🦌', value: 100 },
+        { name: 'Pheasant', emoji: '🐦', value: 20 },
+        { name: 'Truffle', emoji: '🌰', value: 8 },
         { name: 'Butterfly', emoji: '🦋', value: 18 },
-        { name: 'Shoelace', emoji: '👟', value: 5 },
-        { name: 'Mysterious Shadow', emoji: '👤', value: 35 }
+        { name: 'Stray Arrow', emoji: '🏹', value: 5 },
+        { name: 'Mysterious Chest', emoji: '📦', value: 35 }
     ];
 
     let randn = rand(0, parseInt(hunt.length));
@@ -40,7 +40,7 @@ module.exports = async (client, interaction, args) => {
         }
         else {
             client.succNormal({ 
-                text: `🐱 **Pounce!** Your inner hunter awakens!`,
+                text: `🏹 **Got one!** Your hunt paid off!`,
                 fields: [
                     {
                         name: `${caught.emoji}┆Caught`,

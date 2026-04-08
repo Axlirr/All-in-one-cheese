@@ -18,7 +18,7 @@ module.exports = async (client, interaction, args) => {
         }
         else {
 
-            let replies = ['Knocking a vase off the table', 'Stealing fish from the counter', 'Scratching the sofa', 'Hissing at the dog', 'Unrolling toilet paper', 'Napping on the keyboard', 'Stealing socks', 'Knocking over the trash can'];
+            let replies = ['Pickpocketing at the market', 'Swiping cheese from a vendor stall', 'Sneaking into the treasury', 'Robbing a merchant', 'Counterfeiting coins', 'Smuggling goods past the gate', 'Breaking into a warehouse', 'Scamming a trader'];
 
             let result = Math.floor((Math.random() * replies.length));
             let result2 = Math.floor((Math.random() * 10));

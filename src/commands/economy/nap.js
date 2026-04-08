@@ -8,14 +8,14 @@ module.exports = async (client, interaction, args) => {
     let timeout = 1800000;
     
     let napTypes = [
-        { location: 'sunny windowsill', emoji: '☀️', bonus: 1.5 },
-        { location: 'cozy cardboard box', emoji: '📦', bonus: 1.3 },
-        { location: 'warm laundry pile', emoji: '🧺', bonus: 1.4 },
-        { location: 'keyboard (annoying the human)', emoji: '⌨️', bonus: 1.6 },
-        { location: 'top of the cheese wheel', emoji: '🧀', bonus: 2.0 },
-        { location: 'fancy cat bed', emoji: '🛏️', bonus: 1.2 },
-        { location: 'forbidden countertop', emoji: '🍽️', bonus: 1.7 },
-        { location: 'human\'s pillow', emoji: '😴', bonus: 1.8 }
+        { location: 'at the market stall', emoji: '🏪', bonus: 1.5 },
+        { location: 'in the cheese cellar', emoji: '🧀', bonus: 2.0 },
+        { location: 'under a shady tree', emoji: '🌳', bonus: 1.3 },
+        { location: 'by the fireplace', emoji: '🔥', bonus: 1.4 },
+        { location: 'in the tavern', emoji: '🍺', bonus: 1.6 },
+        { location: 'in your cozy bed', emoji: '🛏️', bonus: 1.2 },
+        { location: 'by the river bank', emoji: '🌊', bonus: 1.7 },
+        { location: 'on a hay bale in the barn', emoji: '🌾', bonus: 1.8 }
     ];
     
     let nap = napTypes[Math.floor(Math.random() * napTypes.length)];
@@ -33,7 +33,7 @@ module.exports = async (client, interaction, args) => {
         else {
 
             client.succNormal({
-                text: `😴 **Zzz...** You had a refreshing cat nap!`,
+                text: `😴 **Zzz...** You had a refreshing nap and dreamed of cheese!`,
                 fields: [
                     {
                         name: `${nap.emoji}┆Nap Spot`,

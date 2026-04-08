@@ -17,23 +17,23 @@ module.exports = async (client, interaction, args) => {
     }
     else {
       let replies = [
-        { job: 'Cat Cafe Barista', emoji: '☕' },
-        { job: 'Yarn Ball Factory Worker', emoji: '🧶' },
-        { job: 'Mouse Patrol Officer', emoji: '🐭' },
-        { job: 'Catnip Farmer', emoji: '🌿' },
-        { job: 'Professional Napper', emoji: '😴' },
-        { job: 'Laser Pointer Technician', emoji: '🔴' },
-        { job: 'Cardboard Box Inspector', emoji: '📦' },
-        { job: 'Treat Taste Tester', emoji: '🍪' },
-        { job: 'Sunbeam Quality Analyst', emoji: '☀️' },
-        { job: 'Cheese Wheel Guard', emoji: '🧀' }
+        { job: 'Cheese Maker', emoji: '🧀' },
+        { job: 'Market Trader', emoji: '🏪' },
+        { job: 'Mine Worker', emoji: '⛏️' },
+        { job: 'Dairy Farmer', emoji: '🐄' },
+        { job: 'Baker', emoji: '🥖' },
+        { job: 'Blacksmith', emoji: '⚒️' },
+        { job: 'Merchant', emoji: '💼' },
+        { job: 'Cheese Inspector', emoji: '🔍' },
+        { job: 'Treasure Hunter', emoji: '🗺️' },
+        { job: 'Cheese Vault Guard', emoji: '🛡️' }
       ];
 
       let result = Math.floor((Math.random() * replies.length));
       let amount = Math.floor(Math.random() * 150) + 25;
 
       client.succNormal({
-        text: `🐱 **Meow!** You worked hard today!`,
+        text: `🧀 **Hard work pays off!** You earned some cheese coins!`,
         fields: [
           {
             name: `${replies[result].emoji}┆Job`,

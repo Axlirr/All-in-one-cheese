@@ -14,7 +14,7 @@ module.exports = async (client, interaction) => {
 
     if (!data) {
         return client.errNormal({
-            error: `This cat hasn't collected any cheese coins yet!`,
+            error: `This user hasn't collected any cheese coins yet!`,
             type: 'editreply'
         }, interaction);
     }
@@ -24,25 +24,25 @@ module.exports = async (client, interaction) => {
     const total = money + bank;
 
     return client.embed({
-        title: `🐱🧀 Cheese Cat Balance`,
+        title: `🧀 Cheese Balance`,
         fields: [
             {
-                name: `🐾┆Paw Wallet`,
+                name: `💰┆Wallet`,
                 value: `${money} cheese coins`,
                 inline: true
             },
             {
-                name: `🧀┆Cheese Vault`,
+                name: `🏦┆Cheese Vault`,
                 value: `${bank} cheese coins`,
                 inline: true
             },
             {
-                name: `✨┆Total Stash`,
+                name: `✨┆Total`,
                 value: `${total} cheese coins`,
                 inline: true
             }
         ],
-        desc: `🐱 **${user.username}**'s cheese collection`,
+        desc: `🧀 **${user.username}**'s cheese collection`,
         type: 'editreply'
     }, interaction);
 }

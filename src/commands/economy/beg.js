@@ -8,14 +8,14 @@ module.exports = async (client, interaction, args) => {
     let timeout = 180000;
     
     let reactions = [
-        { response: 'A kind human gives you some cheese!', emoji: '🧀', amount: 15 },
-        { response: 'You do a cute head tilt and earn treats!', emoji: '🐱', amount: 20 },
-        { response: 'Your sad meow melts hearts!', emoji: '😿', amount: 25 },
-        { response: 'You purr adorably and get rewarded!', emoji: '😺', amount: 18 },
-        { response: 'Someone tosses you a cheese cube!', emoji: '🧀', amount: 12 },
-        { response: 'A cat lover gives you premium treats!', emoji: '⭐', amount: 35 },
-        { response: 'You roll over cutely for coins!', emoji: '🐾', amount: 22 },
-        { response: 'Your whiskers twitch and coins appear!', emoji: '✨', amount: 30 }
+        { response: 'A generous merchant tosses you some coins!', emoji: '🧀', amount: 15 },
+        { response: 'You look pitiful enough to earn a handout!', emoji: '💰', amount: 20 },
+        { response: 'A passerby feels sorry and drops a coin!', emoji: '🪙', amount: 25 },
+        { response: 'A cheese seller gives you a free sample!', emoji: '🧀', amount: 18 },
+        { response: 'Someone drops coins into your hat!', emoji: '🎩', amount: 12 },
+        { response: 'A kind noble gives you a generous tip!', emoji: '⭐', amount: 35 },
+        { response: 'You put on a little act and earn some coins!', emoji: '🎭', amount: 22 },
+        { response: 'Luck shines on you today!', emoji: '✨', amount: 30 }
     ];
     
     let reaction = reactions[Math.floor(Math.random() * reactions.length)];
@@ -31,7 +31,7 @@ module.exports = async (client, interaction, args) => {
         else {
 
             client.succNormal({
-                text: `🐱 **Meow~** ${reaction.response}`,
+                text: `🙏 ${reaction.response}`,
                 fields: [
                     {
                         name: `${reaction.emoji}┆Cheese Coins`,

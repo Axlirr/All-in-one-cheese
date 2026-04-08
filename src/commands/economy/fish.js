@@ -24,7 +24,7 @@ module.exports = async (client, interaction, args) => {
         { name: 'Legendary Koi', emoji: '🎏', value: 150 },
         { name: 'Old Boot', emoji: '👢', value: 2 },
         { name: 'Cheese Float', emoji: '🧀', value: 40 },
-        { name: 'Catfish (Ironic!)', emoji: '🐱🐟', value: 35 },
+        { name: 'Big Trout', emoji: '🐡', value: 35 },
         { name: 'Clam with Pearl', emoji: '🦪', value: 60 },
         { name: 'Seaweed Snack', emoji: '🥬', value: 8 }
     ];
@@ -55,7 +55,7 @@ module.exports = async (client, interaction, args) => {
         }
         else {
             client.succNormal({
-                text: `🐱 **Splash!** You dipped your paw in the water!`,
+                text: `🎣 **Splash!** You cast your line and reeled something in!`,
                 fields: [
                     {
                         name: `${caught.emoji}┆Caught`,
