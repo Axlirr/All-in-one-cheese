@@ -8,7 +8,7 @@ module.exports = {
         .addNumberOption(option => option.setName('amount').setDescription('Price in cheese coins').setRequired(true)),
 
     run: async (client, interaction, args) => {
-        await interaction.deferReply({ fetchReply: true });
+        await interaction.deferReply();
         return require(`${process.cwd()}/src/commands/economy/additem`)(client, interaction, args);
     },
 };

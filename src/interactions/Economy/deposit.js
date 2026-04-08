@@ -7,7 +7,7 @@ module.exports = {
         .addNumberOption(option => option.setName('amount').setDescription('Amount to deposit').setRequired(true)),
 
     run: async (client, interaction, args) => {
-        await interaction.deferReply({ fetchReply: true });
+        await interaction.deferReply();
         return require(`${process.cwd()}/src/commands/economy/deposit`)(client, interaction, args);
     },
 };

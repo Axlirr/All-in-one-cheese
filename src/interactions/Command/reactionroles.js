@@ -54,7 +54,7 @@ module.exports = {
      */
 
     run: async (client, interaction, args) => {
-        await interaction.deferReply({ ephemeral: true, fetchReply: true });
+        await interaction.deferReply({ ephemeral: true });
         const perms = await client.checkPerms({
             flags: [Discord.PermissionsBitField.Flags.ManageRoles],
             perms: [Discord.PermissionsBitField.Flags.ManageRoles]

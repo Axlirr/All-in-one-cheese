@@ -42,7 +42,7 @@ module.exports = {
      */
 
     run: async (client, interaction, args) => {
-        await interaction.deferReply({ ephemeral: true, fetchReply: true });
+        await interaction.deferReply({ ephemeral: true });
         client.loadSubcommands(client, interaction, args);
     },
 };

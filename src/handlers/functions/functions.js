@@ -149,7 +149,7 @@ module.exports = async (client) => {
     }
 
     client.createLeaderboard = async function (title, lb, interaction) {
-        interaction.editReply({ embeds: [await client.generateEmbed(0, 0, lb, title, interaction)], fetchReply: true }).then(async msg => {
+        interaction.editReply({ embeds: [await client.generateEmbed(0, 0, lb, title, interaction)] }).then(async msg => {
             if (lb.length <= 10) return;
 
             let button1 = new Discord.ButtonBuilder()
