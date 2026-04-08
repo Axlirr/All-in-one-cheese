@@ -133,7 +133,7 @@ module.exports = (client) => {
         embed.setTitle(`⏳・Cooldown`)
         embed.setDescription(`You've already done this once`)
         embed.addFields(
-            { name: "⏰┆Try again on", value: `<t:${time}:f>` },
+            { name: "⏰┆Try again", value: `<t:${time}:R>` },
         )
         embed.setColor("#FFA500") // Orange
 

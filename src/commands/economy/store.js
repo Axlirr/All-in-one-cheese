@@ -1,25 +1,34 @@
-const Discord = require('discord.js');
-
 const store = require("../../database/models/economyStore");
 
-module.exports = async (client, interaction, args, message) => {
-    store.find({ Guild: interaction.guild.id }, async (err, storeData) => {
-        if (storeData && storeData.length > 0) {
-            const lb = storeData.map(e => `**<@&${e.Role}>** - ${client.emotes.economy.coins} $${e.Amount} \n**To buy:** \`buy ${e.Role}\``);
+module.exports = async (client, interaction, args) => {
+    const storeData = await store.find({ Guild: interaction.guild.id });
 
-            await client.createLeaderboard(`🛒・${interaction.guild.name}'s Store`, lb, interaction);
-            client.embed({
-                title: `🛒・Bot's Store`,
-                desc: `**Catnip** - ${client.emotes.economy.coins} 100 Cheese Coins \n**To buy:** \`buy catnip\`\n\n**Yarn Ball** - ${client.emotes.economy.coins} 250 Cheese Coins \n**To buy:** \`buy yarnball\`\n\n**Scratching Post** - ${client.emotes.economy.coins} 500 Cheese Coins \n**To buy:** \`buy scratchingpost\``,
-            }, interaction.channel);
-        }
-        else {
-            client.errNormal({
-                error: `No store found in this guild!`,
-                type: 'editreply'
-            }, interaction);
-        }
-    })
+    const serverRoles = storeData
+        .map(e => `**<@&${e.Role}>** — ${client.emotes.economy.coins} ${e.Amount} coins`)
+        .join('\n') || 'No custom roles available.';
 
+    const botItems = `**Fishing Rod** — ${client.emotes.economy.coins} 100 coins`;
+
+    return client.embed({
+        title: `🛒・${interaction.guild.name}'s Store`,
+        fields: [
+            {
+                name: `🎭┆Server Roles`,
+                value: serverRoles,
+                inline: false
+            },
+            {
+                name: `🤖┆Bot Items`,
+                value: botItems,
+                inline: false
+            },
+            {
+                name: `💡┆How to buy`,
+                value: `Use the \`/buy\` command and select an item from the menu.`,
+                inline: false
+            }
+        ],
+        type: 'editreply'
+    }, interaction);
 }
 

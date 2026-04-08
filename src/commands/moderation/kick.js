@@ -34,7 +34,7 @@ module.exports = async (client, interaction, args) => {
   }, member).then(function () {
     member.kick(reason)
     client.succNormal({
-      text: "The specified user has been successfully kicked and successfully received a notification!",
+      text: "User kicked and notified via DM.",
       fields: [
         {
           name: "👤┆Kicked user",
@@ -52,7 +52,7 @@ module.exports = async (client, interaction, args) => {
   }).catch(function () {
     member.kick(reason)
     client.succNormal({
-      text: "The given user has been successfully kicked, but has not received a notification!",
+      text: "User kicked. No DM notification was sent.",
       type: 'editreply'
     }, interaction);
   });

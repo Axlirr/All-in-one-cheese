@@ -15,8 +15,9 @@ const Schema = new mongoose.Schema({
     Hunt: { type: Number, default: 0 },
     Yearly: { type: Number, default: 0 },
     Present: { type: Number, default: 0 },
-    Nap: { type: Number, default: 0 },
-    Pounce: { type: Number, default: 0 }
+    Nap: { type: Number, default: 0 }
 });
+
+Schema.index({ Guild: 1, User: 1 });
 
 module.exports = mongoose.model('economytimeout', Schema);

@@ -75,7 +75,7 @@ module.exports = async (client, interaction) => {
                     const subcommand = interaction.options?._subcommand || interaction.options?.getSubcommand?.() || null;
                     const isModerationAction = interaction.commandName === 'moderation' && subcommand && subcommand !== 'help';
 
-                    const ownerOnlyCommands = new Set(['developers', 'message']);
+                    const ownerOnlyCommands = new Set(['developers', 'message', 'addmoney', 'removemoney', 'clear', 'additem', 'deleteitem']);
                     const ownerOnlySubcommands = {
                         economy: new Set(['addmoney', 'removemoney', 'clear', 'additem', 'deleteitem']),
                         moderation: new Set(['resetstats']),

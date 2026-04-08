@@ -7,4 +7,6 @@ const Schema = new mongoose.Schema({
     Bank: Number
 });
 
+Schema.index({ Guild: 1, User: 1 });
+
 module.exports = mongoose.model("economy", Schema);

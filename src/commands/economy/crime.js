@@ -1,79 +1,54 @@
-const Discord = require('discord.js');
-
 const Schema = require("../../database/models/economy");
 const Schema2 = require("../../database/models/economyTimeout");
 
 module.exports = async (client, interaction, args) => {
+    const user = interaction.user;
+    const timeout = 600000;
 
-    let user = interaction.user;
-    let timeout = 600000;
+    const dataTime = await Schema2.findOne({ Guild: interaction.guild.id, User: user.id });
+    const lastCrime = Number(dataTime?.Crime || 0);
 
-    Schema2.findOne({ Guild: interaction.guild.id, User: user.id }, async (err, dataTime) => {
-        if (dataTime && dataTime.Crime !== null && timeout - (Date.now() - dataTime.Crime) > 0) {
-            let time = (dataTime.Crime / 1000 + timeout / 1000).toFixed(0);
-            return client.errWait({
-                time: time,
-                type: 'editreply'
-            }, interaction);
-        }
-        else {
+    if (lastCrime && timeout - (Date.now() - lastCrime) > 0) {
+        const time = (lastCrime / 1000 + timeout / 1000).toFixed(0);
+        return client.errWait({ time: time, type: 'editreply' }, interaction);
+    }
 
-            let replies = ['Knocking a vase off the table', 'Stealing fish from the counter', 'Scratching the sofa', 'Hissing at the dog', 'Unrolling toilet paper', 'Napping on the keyboard', 'Stealing socks', 'Knocking over the trash can'];
+    const replies = ['Pickpocketing at the market', 'Swiping cheese from a vendor stall', 'Sneaking into the treasury', 'Robbing a merchant', 'Counterfeiting coins', 'Smuggling goods past the gate', 'Breaking into a warehouse', 'Scamming a trader'];
+    const result = Math.floor(Math.random() * replies.length);
+    const amount = Math.floor(Math.random() * 80) + 1;
+    // ~35% success chance
+    const success = Math.random() < 0.35;
 
-            let result = Math.floor((Math.random() * replies.length));
-            let result2 = Math.floor((Math.random() * 10));
-            let amount = Math.floor(Math.random() * 80) + 1;
+    await Schema2.updateOne(
+        { Guild: interaction.guild.id, User: user.id },
+        {
+            $setOnInsert: { Guild: interaction.guild.id, User: user.id },
+            $set: { Crime: Date.now() }
+        },
+        { upsert: true }
+    );
 
-            if (result2 > 7) {
-
-                client.succNormal({
-                    text: `Your crime went successfully!`,
-                    fields: [
-                        {
-                            name: `🦹‍♂️┆Crime`,
-                            value: `${replies[result]}`,
-                            inline: true
-                        },
-                        {
-                            name: `${client.emotes.economy.coins}┆Earned`,
-                            value: `$${amount}`,
-                            inline: true
-                        }
-                    ],
-                    type: 'editreply'
-                }, interaction);
-
-                client.addMoney(interaction, user, amount);
-
-                if (dataTime) {
-                    dataTime.Crime = Date.now();
-                    dataTime.save();
+    if (success) {
+        client.succNormal({
+            text: `Your crime went successfully!`,
+            fields: [
+                {
+                    name: `🦹‍♂️┆Crime`,
+                    value: `${replies[result]}`,
+                    inline: true
+                },
+                {
+                    name: `${client.emotes.economy.coins}┆Earned`,
+                    value: `${amount} cheese coins`,
+                    inline: true
                 }
+            ],
+            type: 'editreply'
+        }, interaction);
 
-                else {
-                    new Schema2({
-                        Guild: interaction.guild.id,
-                        User: user.id,
-                        Crime: Date.now()
-                    }).save();
-                }
-            }
-            else {
-                client.errNormal({ error: `You were caught carrying out the crime ${replies[result]}`, type: 'editreply' }, interaction);
-
-                if (dataTime) {
-                    dataTime.Crime = Date.now();
-                    dataTime.save();
-                }
-                else {
-                    new Schema2({
-                        Guild: interaction.guild.id,
-                        User: user.id,
-                        Crime: Date.now()
-                    }).save();
-                }
-            }
-        }
-    })
+        await client.addMoney(interaction, user, amount);
+    } else {
+        client.errNormal({ error: `You were caught carrying out the crime: ${replies[result]}`, type: 'editreply' }, interaction);
+    }
 }
 
