@@ -1,54 +1,16 @@
 # All-in-one Cheese Bot
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="400" viewBox="0 0 1200 400">
-  <rect width="1200" height="400" fill="#0d1117" rx="15"/>
-  <rect width="1200" height="400" fill="url(#grad)" rx="15" opacity="0.4"/>
-
-  <defs>
-    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#fca311" stop-opacity="0.3"/>
-      <stop offset="100%" stop-color="#5865F2" stop-opacity="0.1"/>
-    </linearGradient>
-    <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#ffb703"/>
-      <stop offset="100%" stop-color="#fb8500"/>
-    </linearGradient>
-  </defs>
-
-  <circle cx="1050" cy="80" r="150" fill="#fca311" opacity="0.1" filter="blur(40px)"/>
-  <circle cx="150" cy="320" r="200" fill="#5865F2" opacity="0.1" filter="blur(50px)"/>
-
-  <g transform="translate(100, 120)">
-    <path d="M 10 70 Q 30 10, 90 20 Q 130 50, 140 100 Q 80 130, 20 110 Z" fill="#ffb703"/>
-    <circle cx="45" cy="55" r="12" fill="#0d1117" opacity="0.8"/>
-    <circle cx="95" cy="45" r="8" fill="#0d1117" opacity="0.8"/>
-    <circle cx="75" cy="85" r="15" fill="#0d1117" opacity="0.8"/>
-    <circle cx="35" cy="95" r="6" fill="#0d1117" opacity="0.8"/>
-    <circle cx="115" cy="75" r="10" fill="#0d1117" opacity="0.8"/>
-  </g>
-
-  <text x="300" y="180" font-family="Arial, sans-serif" font-weight="900" font-size="68" fill="url(#textGrad)">
-    All-in-one Cheese
-  </text>
+<div align="center">
+  <img src="https://img.icons8.com/color/150/000000/cheese.png" alt="Cheese Logo" width="120" />
+  <h1>🧀 All-in-one Cheese Bot</h1>
+  <p><b>A production-ready Discord bot focused on moderation, utility, engagement, and server operations.</b></p>
   
-  <text x="305" y="240" font-family="Arial, sans-serif" font-weight="400" font-size="28" fill="#c9d1d9">
-    The Ultimate Moderation &amp; Utility Discord Bot
-  </text>
-
-  <g transform="translate(305, 290)">
-    <rect x="0" y="0" width="160" height="40" rx="8" fill="#21262d"/>
-    <text x="80" y="26" font-family="Arial, sans-serif" font-size="16" fill="#8b949e" text-anchor="middle">Discord.js v14</text>
-    
-    <rect x="175" y="0" width="130" height="40" rx="8" fill="#21262d"/>
-    <text x="240" y="26" font-family="Arial, sans-serif" font-size="16" fill="#8b949e" text-anchor="middle">Moderation</text>
-    
-    <rect x="320" y="0" width="110" height="40" rx="8" fill="#21262d"/>
-    <text x="375" y="26" font-family="Arial, sans-serif" font-size="16" fill="#8b949e" text-anchor="middle">MongoDB</text>
-    
-    <rect x="445" y="0" width="170" height="40" rx="8" fill="#21262d"/>
-    <text x="530" y="26" font-family="Arial, sans-serif" font-size="16" fill="#8b949e" text-anchor="middle">Economy &amp; Utility</text>
-  </g>
-</svg>
-
+  <p>
+    <img src="https://img.shields.io/badge/Discord.js-v14-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Discord.js" />
+    <img src="https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB" />
+    <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Node" />
+  </p>
+</div>
+<br>
 A production-ready Discord bot focused on **moderation, utility, engagement, and server operations**.
 
 ## Highlights
