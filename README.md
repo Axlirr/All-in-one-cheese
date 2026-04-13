@@ -1,4 +1,3 @@
-# All-in-one Cheese Bot
 <div align="center">
   <img src="https://img.icons8.com/color/150/000000/cheese.png" alt="Cheese Logo" width="120" />
   <h1>🧀 All-in-one Cheese Bot</h1>
@@ -11,7 +10,6 @@
   </p>
 </div>
 <br>
-A production-ready Discord bot focused on **moderation, utility, engagement, and server operations**.
 
 ## Highlights
 
