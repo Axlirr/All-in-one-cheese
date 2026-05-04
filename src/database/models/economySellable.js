@@ -14,4 +14,4 @@ const Schema = new mongoose.Schema({
 
 Schema.index({ Guild: 1, ItemName: 1 });
 
-module.exports = mongoose.model("economyItems", Schema);
+module.exports = mongoose.model("economySellable", Schema);

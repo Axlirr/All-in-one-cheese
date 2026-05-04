@@ -2,7 +2,6 @@ const Schema = require('../../database/models/economy');
 const itemSchema = require('../../database/models/economyItems');
 const transactionSchema = require('../../database/models/economyTransactions');
 const cooldownSchema = require('../../database/models/economySellCooldowns');
-const sellableSchema = require('../../database/models/economySellable');
 
 // SECURITY: Anti-bypass and inflation control
 const MAX_TRANSACTION = 1000000; // Max per transaction
