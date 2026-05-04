@@ -13,18 +13,6 @@ module.exports = {
         )
         .addSubcommand(subcommand =>
             subcommand
-                .setName('bing')
-                .setDescription('Find something on Bing')
-                .addStringOption(option => option.setName('name').setDescription('Your search name').setRequired(true))
-        )
-        .addSubcommand(subcommand =>
-            subcommand
-                .setName('ddg')
-                .setDescription('Find something on DuckDuckGo')
-                .addStringOption(option => option.setName('name').setDescription('Your search name').setRequired(true))
-        )
-        .addSubcommand(subcommand =>
-            subcommand
                 .setName('google')
                 .setDescription('Find something on Google')
                 .addStringOption(option => option.setName('name').setDescription('Your search name').setRequired(true))

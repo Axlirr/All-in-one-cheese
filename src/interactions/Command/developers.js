@@ -15,12 +15,6 @@ module.exports = {
         )
         .addSubcommand(subcommand =>
             subcommand
-                .setName('eval')
-                .setDescription('Get the result of a piece of code')
-                .addStringOption(option => option.setName('code').setDescription('Your code').setRequired(true))
-        )
-        .addSubcommand(subcommand =>
-            subcommand
                 .setName('badge')
                 .setDescription('Manage the bot badges')
                 .addBooleanOption(option => option.setName('new').setDescription('Select a boolean').setRequired(true))

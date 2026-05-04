@@ -176,11 +176,6 @@ module.exports = {
                 )
                 .addSubcommand(subcommand =>
                     subcommand
-                        .setName('token')
-                        .setDescription('Get my token')
-                )
-                .addSubcommand(subcommand =>
-                    subcommand
                         .setName('worldclock')
                         .setDescription('Shows the world clock(s)')
                 )

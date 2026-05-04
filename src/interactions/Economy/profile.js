@@ -2,7 +2,7 @@ const { SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('profile')
+        .setName('econprofile')
         .setDescription('View your economy profile and statistics'),
 
     run: async (client, interaction, args) => {
