@@ -26,6 +26,11 @@ module.exports = async (client, interaction, args) => {
                 name: `💡┆How to buy`,
                 value: `Use the \`/buy\` command and select an item from the menu.`,
                 inline: false
+            },
+            {
+                name: `💰┆How to sell`,
+                value: `Use the \`/sell\` command to sell items from your inventory and earn coins back.`,
+                inline: false
             }
         ],
         type: 'editreply'
