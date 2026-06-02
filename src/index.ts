@@ -25,11 +25,11 @@ const client = new Client({
 client.commands = new Collection();
 
 // Connect to MongoDB
-if (!process.env.MONGO_URI) {
-  console.error('MONGO_URI is missing from .env');
+if (!process.env.MONGO_TOKEN) {
+  console.error('MONGO_TOKEN is missing from .env');
   process.exit(1);
 }
-connect(process.env.MONGO_URI)
+connect(process.env.MONGO_TOKEN)
   .then(() => console.log('Connected to MongoDB'))
   .catch((err) => console.error('MongoDB connection error:', err));
 

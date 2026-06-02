@@ -2,11 +2,11 @@ import { GoogleGenAI, Type } from '@google/genai';
 import { agentTools, agentToolDeclarations, AgentContext } from './tools';
 import { GuildConfig } from '../database/GuildConfig';
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || '' });
+const ai = new GoogleGenAI({ apiKey: process.env.OPENAI || '' });
 
 export const processAgentCommand = async (context: AgentContext, prompt: string) => {
-  if (!process.env.GEMINI_API_KEY) {
-    return 'Gemini API key is not configured.';
+  if (!process.env.OPENAI) {
+    return 'Gemini API key (OPENAI var) is not configured.';
   }
 
   try {
