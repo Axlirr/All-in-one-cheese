@@ -10,5 +10,4 @@ export RED_INSTANCE_NAME=${RED_INSTANCE_NAME:-"renderbot"}
 python setup_red.py
 
 # Start the bot
-# Note: The token should be provided via the RED_TOKEN environment variable
-redbot "${RED_INSTANCE_NAME}" --no-prompt
+redbot "${RED_INSTANCE_NAME}" --token "${RED_TOKEN}" --prefix "${RED_PREFIX:-!}" --no-prompt
