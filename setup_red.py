@@ -29,7 +29,6 @@ if not config_file.exists():
         parsed = urllib.parse.urlparse(uri)
         config[instance_name]["STORAGE_TYPE"] = "Postgres"
         config[instance_name]["STORAGE_DETAILS"] = {
-            "driver": "postgres",
             "host": parsed.hostname,
             "port": parsed.port or 5432,
             "user": parsed.username,
